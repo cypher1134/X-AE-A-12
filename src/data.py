@@ -5,7 +5,6 @@ import time
 from datetime import datetime
 
 
-
 def db_to_dataframe(cursor):
     data=pd.DataFrame(columns=['id','user','text','view','like','retweet','date'])
     aide=None
