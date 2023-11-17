@@ -3,7 +3,7 @@ from twscrape import API, gather
 from twscrape.logger import set_log_level
 import sqlite3
 
-connection = sqlite3.connect("scrap.db")
+connection = sqlite3.connect("data/scrap.db")
 cursor = connection.cursor()
 
 async def main():
