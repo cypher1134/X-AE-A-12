@@ -6,20 +6,16 @@ import dash_bootstrap_components as dbc
 from dash_bootstrap_templates import load_figure_template
 import plotly.express as px
 import time
+from threading import Thread
 
 if __name__ == "__main__":
-    db_conn = sqlite3.connect("data/scrap.db")
-    db_cursor = db_conn.cursor()
-    raw_data = data.db_to_dataframe(db_cursor)
-    raw_data['date'] = raw_data['date'].apply(data.twi_time_to_unix)
-
     load_figure_template("darkly")
-    dbc_css = "https://cdn.jsdelivr.net/gh/AnnMarieW/dash-bootstrap-templates/dbc.min.css"
+    dbc_css = "https://cdn.jsdelivr.net/gh/AnnMarieW/dash-bootstrap-templates/dbc.min.css" #### MAKE IT LOCAL
     app = Dash(__name__, external_stylesheets=[dbc.themes.DARKLY, dbc_css])
 
     app.layout = html.Div([
         dbc.Row([
-            dbc.Progress(value=50, id="progressbar_init"),
+            dbc.Collapse(dbc.Progress(value=50, id="progressbar_init"), id="collapse_bar", is_open=False),
             dcc.Interval(id='clock', interval=1000, n_intervals=0, max_intervals=-1),
             dbc.InputGroup([
                 dbc.InputGroupText("Search"), 
@@ -27,7 +23,7 @@ if __name__ == "__main__":
             ], className="mb-3"),
         ]),
         dbc.Row([
-            dbc.Col([dash_table.DataTable(data=raw_data.to_dict('records'), page_size=10, id='table', virtualization=True)], className="dbc", width=6),
+            dbc.Col([dash_table.DataTable(page_size=10, id='table', virtualization=True)], className="dbc", width=6),
             dbc.Col([
                 dcc.Graph(figure={}, id='tweet_count'),
                 dcc.Graph(figure={}, id='polarity'),
@@ -35,11 +31,24 @@ if __name__ == "__main__":
             ], width=5)
         ]),
     ])
-    app.run(debug = True)
 
     @app.callback(
-    Input("clock", "n_intervals"),
     Output("progressbar_init", "value"),
+    Output("progressbar_init", "label"),
+    Output("table", "data"),
+    Output("collapse_bar", "is_open"),
+    Input("clock", "n_intervals"),
     )
     def progress_bar_update(n):
-        return(data.init_percent * 100,)
+        if data.init_percent == 1:
+            dash_table_data = data.raw_data.to_dict('records')
+            collapse_bar = False
+        else :
+            dash_table_data = None
+            collapse_bar = True
+        return data.init_percent * 100, str(round(data.init_percent * 100)) + ' %', dash_table_data, collapse_bar
+    
+    thread = Thread(target=data.db_thread, args=("./data/scrap.db",))
+    thread.start()
+
+    app.run(debug = True)
