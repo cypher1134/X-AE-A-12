@@ -33,11 +33,49 @@ def graph_from_dict(dict):
         })
         for (tag, weight) in tag_list:
             edges.append(
-                {'data': {'source': key, 'target': tag, 'weight': weight, 'color': color_mapping(weight, 70)}})
+                {'data': {'source': tag, 'target': key, 'weight': weight, 'color': color_mapping(weight, 70)}})
     return nodes + edges
 
 
 def dash_graph(data):
+    # data => dict (récup le dico)
+    # dict => graph avec graph_from_dict
+    # return div avec ça et supprimer le reste des tests en bas
+    """
+    div = html.Div([
+    cyto.Cytoscape(
+        id='cytoscape_quotes',
+        elements=elements,
+        style={'width': '100%', 'height': '600px'},
+        layout={
+            'name': 'cose'
+        },
+        stylesheet=[
+            {
+                'selector': 'node',
+                'style': {
+                    "width": "data(size)",
+                    "height": "data(size)",
+                    "content": "data(label)",
+                    "font-size": "10px",
+                    "text-valign": "center",
+                    "text-halign": "center",
+                }
+            },
+            {
+                'selector': 'edge',
+                'style': {
+                    'curve-style': 'bezier',
+                    'target-arrow-shape': 'vee',
+                    'target-arrow-color': 'data(color)',
+                    'line-color': 'data(color)',
+
+                },
+            },
+
+        ]
+    )
+])"""
     pass
 
 # Test
@@ -48,7 +86,7 @@ dico_test = {'user1': (54, [('user2', 3), ('user3', 51)]),
              'user3': (0, []),
              'user4': (35, [('user3', 35)])}
 
-elements = dash_graph(dico_test)
+elements = graph_from_dict(dico_test)
 
 
 app = Dash(__name__)
