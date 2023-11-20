@@ -2,7 +2,6 @@ import pandas as pd
 import sqlite3
 from tqdm import tqdm
 import time
-from datetime import datetime
 
 
 init_percent = 0
@@ -27,7 +26,7 @@ def db_to_dataframe(cursor):
     cursor.execute('SELECT * FROM tweets')
     global init_percent
     for i in range(n):
-        init_percent = round(i/(n-1), 2)
+        init_percent = round(100*i/(n-1))
         aide = cursor.fetchone()
         aide = [0 if v is None else v for v in aide]
         data.loc[i] = aide
