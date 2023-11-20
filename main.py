@@ -9,6 +9,17 @@ import time
 from datetime import date, datetime
 from threading import Thread
 
+def date_iso_to_unix(begin_date, end_date):
+    if begin_date is not None:
+        unix_begin_date = datetime.combine(date.fromisoformat(begin_date), datetime.min.time()).timestamp()
+    else:
+        unix_begin_date = ''
+    if end_date is not None:
+        unix_end_date = datetime.combine(date.fromisoformat(end_date), datetime.min.time()).timestamp()
+    else:
+        unix_end_date = ''
+    return unix_begin_date, unix_end_date
+
 if __name__ == "__main__":
     load_figure_template("darkly")
     dbc_css = "https://cdn.jsdelivr.net/gh/AnnMarieW/dash-bootstrap-templates/dbc.min.css"
@@ -67,14 +78,7 @@ if __name__ == "__main__":
             if date_switch_state:
                 tweet_count_figure = dashboard.tweet_count_hist(data.raw_data, "text", str(search or '', ))
             else:
-                if begin_date is not None:
-                    unix_begin_date = datetime.combine(date.fromisoformat(begin_date), datetime.min.time()).timestamp()
-                else:
-                    unix_begin_date = ''
-                if end_date is not None:
-                    unix_end_date = datetime.combine(date.fromisoformat(end_date), datetime.min.time()).timestamp()
-                else:
-                    unix_end_date = ''
+                unix_begin_date, unix_end_date = date_iso_to_unix(begin_date, end_date)
                 tweet_count_figure = dashboard.tweet_count_hist(data.raw_data, "text", str(search or '', ), unix_begin_date, unix_end_date)
         else :
             collapse_bar = True
