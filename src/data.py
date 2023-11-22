@@ -2,7 +2,7 @@ import pandas as pd
 import sqlite3
 from tqdm import tqdm
 import time
-
+n=0
 
 init_percent = 0
 raw_data = None
@@ -30,13 +30,11 @@ def db_thread(path, savepath="../data/raw_data.json", force_writing=False):
 
 
 def db_to_dataframe(cursor):
+    global n
     data=pd.DataFrame(columns=['id','user','text','view','like','retweet','date'])
     aide=None
     cursor.execute("SELECT Count() FROM tweets")
     n=cursor.fetchone()[0]
-    ###################################
-    n=10000000000
-    ###################################
     cursor.execute('SELECT * FROM tweets')
     global init_percent
     for i in range(n):
