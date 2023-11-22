@@ -4,7 +4,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import PassiveAggressiveClassifier
 import data
 
-def predict_on_database(df, train_csv_path="./data/train.csv"):
+def predict_on_database(df, train_csv_path="../data/train.csv"):
     """
     Predicts fake news labels and probabilities for articles in a database using a trained model.
 
@@ -37,20 +37,17 @@ def predict_on_database(df, train_csv_path="./data/train.csv"):
     y_pred = pac.predict(tfidf_test)
     y_prob = pac.decision_function(tfidf_test)
 
-    # Convert decision function scores to probabilities using the logistic function
+    # Convert decision function scores to probabilities 
     probabilities = 1 / (1 + np.exp(-y_prob))
 
     # Update the database with predictions and probabilities
     df["fake_value"] = y_pred
     df["confidence"] = probabilities # Use the probability for the "FAKE" class
-
-    # Convert 'confidence' column to numeric
     df["confidence"] = pd.to_numeric(df["confidence"])
-    print(df)
-    for i,conf in enumerate(df["confidence"]):
-        if pd.to_numeric(conf) < 0.4 and  df["fake_value"].iloc[i]=="FAKE":
-            df.iloc[i, -2]="REAL"
     # Set "fake" value to True for rows where confidence is smaller than 0.2
+    for i,conf in enumerate(df["confidence"]):
+        if pd.to_numeric(conf) < 0.2 and  df.iloc[i,-2]=="FAKE":
+            df.iloc[i,-2]="REAL"
     
 
     # Display the count of REAL and FAKE instances
@@ -59,9 +56,6 @@ def predict_on_database(df, train_csv_path="./data/train.csv"):
     fake_count = np.sum(y_pred == "FAKE")
     print("FAKE Count =", fake_count)
 
-    # Display the updated database with confidence
-    # print("Updated Database with Confidence:")
-    # print(df)
 
     return df
 
