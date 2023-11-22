@@ -10,6 +10,16 @@ from datetime import date, datetime
 from threading import Thread
 
 def date_iso_to_unix(begin_date, end_date):
+    """
+    Converts ISO-formatted date strings to Unix timestamps.
+
+    Parameters:
+    - begin_date: str, ISO-formatted start date.
+    - end_date: str, ISO-formatted end date.
+
+    Returns:
+    tuple: Unix timestamps for the start and end dates.
+    """
     if begin_date is not None:
         unix_begin_date = datetime.combine(date.fromisoformat(begin_date), datetime.min.time()).timestamp()
     else:
@@ -91,6 +101,19 @@ if __name__ == "__main__":
         Input("date-switch", "value"),
     )
     def progress_bar_update(n, search, begin_date, end_date, date_switch):
+        """
+        Updates the progress bar and generates figures based on user input.
+
+        Parameters:
+        - n: int, interval count.
+        - search: str, search string.
+        - begin_date: str, start date.
+        - end_date: str, end date.
+        - date_switch: list, switch state for all period.
+
+        Returns:
+        tuple: progress bar values, figures, and control settings.
+        """
         date_switch_state = bool(len(date_switch))
         if data.init_percent >= 100 and data.training_model == False:
             collapse_bar = False
@@ -136,6 +159,15 @@ if __name__ == "__main__":
         Input("tabs", "active_tab"),
     )
     def switch_tab(at):
+        """
+        Switches the search tab's visibility.
+
+        Parameters:
+        - at: str, active tab.
+
+        Returns:
+        bool: search tab visibility state.
+        """
         if at == "tab-1":
             return False
         elif at == "tab-2":

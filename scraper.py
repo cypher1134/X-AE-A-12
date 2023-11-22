@@ -7,6 +7,18 @@ connection = sqlite3.connect("data/scrap.db")
 cursor = connection.cursor()
 
 async def main():
+    """
+    Asynchronous function to scrape tweets using the twscrape library.
+
+    Scrapes tweets related to "bill gates" in English from November 1, 2023, to November 18, 2023,
+    and stores them in a SQLite database.
+
+    Parameters:
+    None
+
+    Returns:
+    None
+    """
     api = API()
     for i in range(18,0,-1):
         q = "bill gates lang:en since:2023-11-01 until:2023-11-{}".format(i)
