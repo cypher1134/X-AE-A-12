@@ -9,6 +9,7 @@ raw_data = None
 
 def db_thread(path, savepath="data/raw_data.json", force_writing=False):
     global raw_data
+    global init_percent
     if not force_writing:
         try :
             raw_data=pd.read_json(savepath)
@@ -23,6 +24,7 @@ def db_thread(path, savepath="data/raw_data.json", force_writing=False):
         raw_data.to_json(savepath)
         print('-----Raw_data registered-----')
     raw_data['date'] = raw_data['date'].apply(twi_time_to_unix)
+    init_percent = 100
 
 
 def db_to_dataframe(cursor):
