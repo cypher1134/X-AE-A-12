@@ -20,10 +20,10 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
 
-train_data_file=csv_file_path = os.path.abspath(os.path.join(root, '..', '..', 'data', "train.csv"))
-partial_train=csv_file_path = os.path.abspath(os.path.join(root, '..', '..', 'data', "partial_train.csv"))
-partial_test=csv_file_path = os.path.abspath(os.path.join(root, '..', '..', 'data', "partial_test.csv"))
-
+train_data_file=csv_file_path = os.path.abspath(os.path.join(root, 'data', "train.csv"))
+partial_train=csv_file_path = os.path.abspath(os.path.join(root, 'data', "partial_train.csv"))
+partial_test=csv_file_path = os.path.abspath(os.path.join(root, 'data', "partial_test.csv"))
+print(train_data_file)
 
 def test_full_data_accuracy():
     # Load the full training dataset
