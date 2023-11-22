@@ -44,18 +44,17 @@ def predict_on_database(df, train_csv_path="../data/train.csv"):
     df["fake_value"] = y_pred
     df["confidence"] = probabilities # Use the probability for the "FAKE" class
     df["confidence"] = pd.to_numeric(df["confidence"])
+    
     # Set "fake" value to True for rows where confidence is smaller than 0.2
-    for i,conf in enumerate(df["confidence"]):
+    for i, conf in enumerate(df["confidence"]):
         if pd.to_numeric(conf) < 0.2 and  df.iloc[i,-2]=="FAKE":
             df.iloc[i,-2]="REAL"
     
-
     # Display the count of REAL and FAKE instances
     real_count = np.sum(y_pred == "REAL")
     print("REAL Count =", real_count)
     fake_count = np.sum(y_pred == "FAKE")
     print("FAKE Count =", fake_count)
-
 
     return df
 
