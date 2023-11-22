@@ -1,4 +1,4 @@
-from src import data, dashboard
+from src import dashboard, data_processing
 import pandas as pd
 import sqlite3
 from dash import Dash, html, dash_table, dcc, callback, Output, Input
@@ -115,10 +115,10 @@ if __name__ == "__main__":
         tuple: progress bar values, figures, and control settings.
         """
         date_switch_state = bool(len(date_switch))
-        if data.init_percent >= 100 and data.training_model == False:
+        if data_processing.init_percent >= 100 and data_processing.training_model == False:
             collapse_bar = False
             clock_stat = 0
-            df_search = dashboard.dataframe_search(data.raw_data, "text", str(search or '', ))
+            df_search = dashboard.dataframe_search(data_processing.raw_data, "text", str(search or '', ))
             if date_switch_state:
                 fake_perc_figure, fake_line_figure = dashboard.fake_pie_line(df_search)
                 tweet_count_figure = dashboard.tweet_count_hist(df_search)
@@ -139,10 +139,10 @@ if __name__ == "__main__":
             tweet_count_figure = None
             like_count_figure, retweet_count_figure, view_count_figure = None, None, None
         return (
-            data.init_percent, 
-            str(data.init_percent) + ' %',
-            data.training_model,
-            data.training_model,
+            data_processing.init_percent, 
+            str(data_processing.init_percent) + ' %',
+            data_processing.training_model,
+            data_processing.training_model,
             collapse_bar, 
             clock_stat, 
             tweet_count_figure, 
@@ -173,7 +173,7 @@ if __name__ == "__main__":
         elif at == "tab-2":
             return True
     
-    thread = Thread(target=data.db_thread, args=("./data/scrap.db",))
+    thread = Thread(target=data_processing.db_thread, args=("./data/scrap.db",))
     thread.start()
     
     app.run(debug = True)
