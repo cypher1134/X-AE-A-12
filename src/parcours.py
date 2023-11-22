@@ -1,6 +1,18 @@
 import pandas as pd
 
 def select_biggest_connected_graph(dico_tag,main_node):
+    
+"""
+    Performs a depth-first search traversal on a graph represented by the dico dictionary 
+       starting the search from the point max and returns the biggest connected graph containing max
+    Args :
+        dico(DefaultDict): dictionnary that represents the graph
+        max(String): the starting point of the research
+
+    Returns:
+        DefaultDico : updated dictionnary that represents
+        the biggest connected graph containing max
+    """
     file,rep=[],[main_node]
     visited={}
     for x in dico_tag:
@@ -22,6 +34,14 @@ def select_biggest_connected_graph(dico_tag,main_node):
 
 
 def liste_to_df(df,liste):
+     """
+    Creates a new dataframe that contains all the data related to users in list
+    Args:
+        df(DataFrame): the initial database
+        list(list): List of strings (usernames) of interest
+    Returns:
+        DataFrame containing informations of tweets tweeted by usernames of interest
+    """
     df2=pd.DataFrame(['id','user','text','view','like','retweet','date','fake_value'])
     for i in range(len(liste)):
         subset_df = df[df['user'].isin([liste[i]])]
