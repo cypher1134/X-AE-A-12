@@ -3,6 +3,8 @@ import pandas as pd
 import sqlite3
 import time
 from  .data_processing import * 
+import os
+
 
 # Mocking the sqlite3 connect method
 class MockSQLiteCursor:
@@ -21,8 +23,14 @@ class MockSQLiteCursor:
         self.query_results = results
 
 def test_db_to_dataframe():
+    # Get the absolute path to the directory of the current script
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    
+    # Construct the absolute path to the database file
+    db_path = os.path.join(script_dir, '..', 'data', 'scrap.db')
+
     # Connect to the SQLite database
-    connection = sqlite3.connect('../data/scrap.db')
+    connection = sqlite3.connect(db_path)
     cursor = connection.cursor()
 
     # Fetch the actual number of rows in the table
@@ -48,7 +56,6 @@ def test_db_to_dataframe():
 
     # Close the connection
     connection.close()
-
 
 def test_twi_time_to_unix():
     # Test with a known Twitter timestamp
