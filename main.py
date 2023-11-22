@@ -48,11 +48,22 @@ if __name__ == "__main__":
         dbc.Card([
             dbc.Row([
                 dbc.Col([
-                    dcc.Graph(figure={}, id='tweet_count'),
-                ], className="dbc", width=6),
+                    dbc.Row(dcc.Graph(figure={}, id='tweet_count'), style={"height": "350px"}),
+                ], className="dbc", width=4),
                 dbc.Col([
-                    dcc.Graph(figure={}, id='polarity'),
-                ], className="dbc", width=6)
+                    dbc.Row([
+                        dbc.Col([
+                            dbc.Row(dcc.Graph(figure={}, id='view'), style={"height": "150px"}),
+                            dbc.Row(dcc.Graph(figure={}, id='retweet'), style={"height": "150px"}),
+                            dbc.Row(dcc.Graph(figure={}, id='like'), style={"height": "150px"}),
+                        ], style={"maxHeight": "350px", "overflow": "scroll", 'max-width': '100%', 'overflow-x': 'hidden'}, width = 8),
+                        dbc.Col(dcc.Graph(figure={}, id='share'), width = 4),
+                    ], style={"maxHeight": "350px"}),
+                    dbc.Row([
+                        dbc.Col(dcc.Graph(figure={}, id='fakelnewsss')),
+                        dbc.Col(dcc.Graph(figure={}, id='fakenews')),
+                    ]),
+                ], className="dbc", width=8)
             ]),
         ], className="mt-3")
     ], style={'max-width': '100%', 'overflow-x': 'hidden'})
@@ -63,6 +74,9 @@ if __name__ == "__main__":
         Output("collapse_bar", "is_open"),
         Output("clock", "max_intervals"),
         Output('tweet_count', 'figure'),
+        Output('like', 'figure'),
+        Output('retweet', 'figure'),
+        Output('view', 'figure'),
         Output("date-picker-range", "disabled"),
         Input("clock", "n_intervals"),
         Input('search', 'value'),
@@ -75,16 +89,33 @@ if __name__ == "__main__":
         if data.init_percent == 100:
             collapse_bar = False
             clock_stat = 0
+            df_search = dashboard.dataframe_search(data.raw_data, "text", str(search or '', ))
             if date_switch_state:
-                tweet_count_figure = dashboard.tweet_count_hist(data.raw_data, "text", str(search or '', ))
+                tweet_count_figure = dashboard.tweet_count_hist(df_search)
+                like_count_figure, retweet_count_figure, view_count_figure  = dashboard.like_retweet_view_count_line(df_search)
             else:
                 unix_begin_date, unix_end_date = date_iso_to_unix(begin_date, end_date)
-                tweet_count_figure = dashboard.tweet_count_hist(data.raw_data, "text", str(search or '', ), unix_begin_date, unix_end_date)
+                tweet_count_figure = dashboard.tweet_count_hist(df_search, unix_begin_date, unix_end_date)
+                like_count_figure, retweet_count_figure, view_count_figure = dashboard.like_retweet_view_count_line(df_search, unix_begin_date, unix_end_date)
+            like_count_figure.update_layout(xaxis=dict(showgrid=False),yaxis=dict(showgrid=False),showlegend=False, xaxis_visible=False, xaxis_showticklabels=False, yaxis_title="likes", margin=dict(l=2, r=10, t=2, b=2))
+            view_count_figure.update_layout(xaxis=dict(showgrid=False),yaxis=dict(showgrid=False),showlegend=False, xaxis_visible=False, xaxis_showticklabels=False, yaxis_title="views", margin=dict(l=2, r=10, t=2, b=2))
+            retweet_count_figure.update_layout(xaxis=dict(showgrid=False),yaxis=dict(showgrid=False),showlegend=False, xaxis_visible=False, xaxis_showticklabels=False, yaxis_title="retweets", margin=dict(l=10, r=2, t=2, b=2))
         else :
             collapse_bar = True
             clock_stat = -1
             tweet_count_figure = None
-        return data.init_percent, str(data.init_percent) + ' %', collapse_bar, clock_stat, tweet_count_figure, date_switch_state
+            like_count_figure, retweet_count_figure, view_count_figure = None, None, None
+        return (
+            data.init_percent, 
+            str(data.init_percent) + ' %', 
+            collapse_bar, 
+            clock_stat, 
+            tweet_count_figure, 
+            like_count_figure, 
+            retweet_count_figure, 
+            view_count_figure, 
+            date_switch_state
+        )
 
     @app.callback(
         Output("collapse_search", "is_open"),
