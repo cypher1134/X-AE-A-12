@@ -1,18 +1,16 @@
 
 import pandas as pd
-
 import sys
 import os
-
 # Getting the name of the directory where this file is present.
 current = os.path.dirname(os.path.realpath(__file__))
-
 # Getting the parent directory name where the current directory is present.
-parent = os.path.dirname(current)
+src = os.path.dirname(current)
+root = os.path.dirname(src)
 
 # Adding the parent directory to the sys.path.
-sys.path.append(parent)
-
+sys.path.append(src)
+sys.path.append(root)
 
 # Now import the module
 import Machin_Learning as ML
@@ -22,8 +20,11 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
 
-# Assuming this is your test module, let's call it test_FN.py
-train_data_file="../../data/train.csv"
+train_data_file=csv_file_path = os.path.abspath(os.path.join(current, '..', '..', 'data', "train.csv"))
+partial_train=csv_file_path = os.path.abspath(os.path.join(current, '..', '..', 'data', "partial_train.csv"))
+partial_test=csv_file_path = os.path.abspath(os.path.join(current, '..', '..', 'data', "partial_test.csv"))
+
+
 def test_full_data_accuracy():
     # Load the full training dataset
     df_Full_test = pd.read_csv(train_data_file)
@@ -47,8 +48,8 @@ def test_partial_data_accuracy():
     partial_test_df_COMP = partial_test_df.copy()
 
     # Save the smaller training and test datasets to new files
-    partial_train_df.to_csv("../../data/partial_train.csv", index=False)
-    partial_test_df.to_csv("../../data/partial_test.csv", index=False)
+    partial_train_df.to_csv(partial_train, index=False)
+    partial_test_df.to_csv(partial_test, index=False)
 
     # Use the 'predict_on_database' function to predict fake news labels and probabilities on the partial test dataset
     predicted_partial_test_df = ML.predict_on_database(partial_test_df, "../../data/partial_train.csv")

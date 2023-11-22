@@ -15,7 +15,7 @@ parent = os.path.dirname(current)
 sys.path.append(parent)
 
 from  data_processing import * 
-import os
+
 
 
 # Mocking the sqlite3 connect method
