@@ -15,13 +15,13 @@ if __name__ == "__main__":
         except Exception as e:
             print(e)
             raw_data=None
-    if raw_data.iloc[0,0]==None or force_writing :
+    if force_writing or raw_data==None :
         db_conn = sqlite3.connect("data/scrap.db")
         db_cursor = db_conn.cursor()
         raw_data = data.db_to_dataframe(db_cursor)
         raw_data.to_json('data/raw_data.json')
         print('-----Raw_data registered-----')
-    graph_dict=data_analysis.graph_dict_generate(raw_data.head(1000),force_writing)
+    graph_dict=data_analysis.graph_dict_generate(raw_data.head(10),force_writing)
     app = Dash(__name__)
     app.layout =graph.dash_graph(graph_dict)
     app.run(debug=True)
