@@ -7,11 +7,21 @@ import time
 init_percent = 0
 raw_data = None
 
-def db_thread(path):
+def db_thread(path, savepath="data/raw_data.json", force_writing=False):
     global raw_data
-    conn = sqlite3.connect(path)
-    cursor = conn.cursor()
-    raw_data = db_to_dataframe(cursor)
+    if not force_writing:
+        try :
+            raw_data=pd.read_json(savepath)
+            print('-----Finished to load raw_data-----')
+        except Exception as e:
+            print(e)
+            raw_data=None
+    if force_writing or raw_data.empty :
+        db_conn = sqlite3.connect(path)
+        db_cursor = db_conn.cursor()
+        raw_data = db_to_dataframe(db_cursor)
+        raw_data.to_json(savepath)
+        print('-----Raw_data registered-----')
     raw_data['date'] = raw_data['date'].apply(twi_time_to_unix)
 
 

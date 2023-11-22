@@ -48,22 +48,24 @@ if __name__ == "__main__":
         dbc.Card([
             dbc.Row([
                 dbc.Col([
-                    dbc.Row(dcc.Graph(figure={}, id='tweet_count'), style={"height": "350px"}),
-                ], className="dbc", width=4),
+                    dbc.CardHeader("General informations"),
+                    dbc.Row(dcc.Graph(figure={}, id='tweet_count'), style={"height": "400px"}),
+                ], width=4),
                 dbc.Col([
                     dbc.Row([
                         dbc.Col([
+                            dbc.CardHeader("Interactions stats"),
                             dbc.Row(dcc.Graph(figure={}, id='view'), style={"height": "150px"}),
                             dbc.Row(dcc.Graph(figure={}, id='retweet'), style={"height": "150px"}),
                             dbc.Row(dcc.Graph(figure={}, id='like'), style={"height": "150px"}),
-                        ], style={"maxHeight": "350px", "overflow": "scroll", 'max-width': '100%', 'overflow-x': 'hidden'}, width = 8),
-                        dbc.Col(dcc.Graph(figure={}, id='share'), width = 4),
+                        ], className="g-0", style={"maxHeight": "350px", "overflow": "scroll", 'max-width': '100%', 'overflow-x': 'hidden'}, width = 8),
+                        dbc.Col(dcc.Graph(figure={}, id='share'), className="g-0", width = 4),
                     ], style={"maxHeight": "350px"}),
                     dbc.Row([
-                        dbc.Col(dcc.Graph(figure={}, id='fakelnewsss')),
-                        dbc.Col(dcc.Graph(figure={}, id='fakenews')),
+                        dbc.Col(dcc.Graph(figure={}, id='fakelnewsss'), className="g-0"),
+                        dbc.Col(dcc.Graph(figure={}, id='fakenews'), className="g-0"),
                     ]),
-                ], className="dbc", width=8)
+                ], width=8)
             ]),
         ], className="mt-3")
     ], style={'max-width': '100%', 'overflow-x': 'hidden'})
@@ -97,7 +99,7 @@ if __name__ == "__main__":
                 unix_begin_date, unix_end_date = date_iso_to_unix(begin_date, end_date)
                 tweet_count_figure = dashboard.tweet_count_hist(df_search, unix_begin_date, unix_end_date)
                 like_count_figure, retweet_count_figure, view_count_figure = dashboard.like_retweet_view_count_line(df_search, unix_begin_date, unix_end_date)
-            like_count_figure.update_layout(xaxis=dict(showgrid=False),yaxis=dict(showgrid=False),showlegend=False, xaxis_visible=False, xaxis_showticklabels=False, yaxis_title="likes", margin=dict(l=2, r=10, t=2, b=2))
+            like_count_figure.update_layout(xaxis=dict(showgrid=False),yaxis=dict(showgrid=True),showlegend=False, xaxis_visible=False, xaxis_showticklabels=False, yaxis_title="likes", margin=dict(l=2, r=10, t=2, b=2))
             view_count_figure.update_layout(xaxis=dict(showgrid=False),yaxis=dict(showgrid=False),showlegend=False, xaxis_visible=False, xaxis_showticklabels=False, yaxis_title="views", margin=dict(l=2, r=10, t=2, b=2))
             retweet_count_figure.update_layout(xaxis=dict(showgrid=False),yaxis=dict(showgrid=False),showlegend=False, xaxis_visible=False, xaxis_showticklabels=False, yaxis_title="retweets", margin=dict(l=10, r=2, t=2, b=2))
         else :
