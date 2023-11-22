@@ -4,7 +4,6 @@ from tqdm import tqdm
 import time
 from datetime import datetime
 
-
 def db_to_dataframe(cursor):
     assert type(cursor)==sqlite3.Cursor,('the argument is not a cursor')
     columns=['id','user','text','view','like','retweet','date','fake_value']
