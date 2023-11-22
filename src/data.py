@@ -7,13 +7,12 @@ from datetime import datetime
 
 def db_to_dataframe(cursor):
     assert type(cursor)==sqlite3.Cursor,('the argument is not a cursor')
-    columns=['id','user','text','view','like','retweet','date']
-    data=pd.DataFrame(columns=['id','user','text','view','like','retweet','date'])
+    columns=['id','user','text','view','like','retweet','date','fake_value']
+    data=pd.DataFrame(columns=['id','user','text','view','like','retweet','date','fake_value'])
     aide=None
     cursor.execute("SELECT Count() FROM tweets")
     n = cursor.fetchone()[0]
     cursor.execute('SELECT * FROM tweets')
-    dict={}
     print('-----Starting conversion-----')
     for i in tqdm(range(n)):
         aide = cursor.fetchone()#sélectionne une ligne

@@ -4,10 +4,10 @@ import json
 import numpy as np
 import data
 
-def tweet_per_user(df):
-    return df.groupby(['user'])['id'].count().sort_values(ascending=False)
+def most_tweet_per_user(df):
+    return df.groupby(['user'])['id'].count().sort_values(ascending=False).tolist()[0]
 ###test tweet_per_user
-#print(tweet_per_user(df))
+#print(most_tweet_per_user(df))
 
 def get_all_tag(df,force_writing=False):
     '''renvoie une liste de tuple'''
@@ -73,14 +73,20 @@ def graph_dict_generate(df,force_writing=False):
     print('-----Creating graph dictionnary-----')
     for username in tqdm(tag_dict):
         tager_username_list=list_to_doublons_description(tag_dict[username][1])
-        graph_dict[username]=(tag_dict[username][0],tager_username_list)
+        graph_dict[username]=(tag_dict[username][0],tager_username_list,username_to_fake_value(df,username))
         
         for tager_username in [tager_username_list[i][0] for i in range(len(tager_username_list))]:
             if tager_username not in tag_dict:
-                graph_dict[tager_username]=(0,[])
+                graph_dict[tager_username]=(0,[],username_to_fake_value(df,tager_username))
+    print('-----Finished creating graph dictionnary-----')
     return graph_dict
     
 def list_to_doublons_description(mylist):
+    """renvoie une liste qui supprime les doublons avec ce format
+    list_to_doublons_description(['a','b','a','c']))
+    [('a',2),('b',1),('c',1)]
+
+    """
     list_description=[]
     list_description_drop_duplicates=list(dict.fromkeys(mylist))
     for user in  list_description_drop_duplicates:
@@ -98,10 +104,10 @@ def list_to_doublons_description(mylist):
 #print('id des tweets avec le tag {} :'.format(list(dicto.keys())[0]), list(dicto.values())[0][1]) 
 
 def tager_username_to_tweet_id_list(df,tag,username):
+    """renvoie la list des tweet_id des tweets qui viennent d'un username et qui contiennent le tag"""
     assert type(username)==str
     n_column_id=0  
     n_column_text=2
-    
     df_tweet=df.loc[df['user']== username]
     row_number=df_tweet.shape[0]
     tweet_id_list=[]
@@ -117,10 +123,12 @@ def tager_username_to_tweet_id_list(df,tag,username):
 #>>>[14568998]
 
 
-def get_opinion_by_id(df,tweet_id):
+
+def get_fake_value_by_id(df,tweet_id):
+    """Renvoie l'opinion d'un tweet avec son tweet_id"""
     assert type(tweet_id)==int
     try :
-        opinion=(df.loc[df['id'] == tweet_id]['target'].iloc[0])
+        opinion=(df.loc[df['id'] == tweet_id]['fake_value'].iloc[0])
         return opinion
     except Exception as e:
         print(e)
@@ -137,28 +145,40 @@ def get_opinion_on_tag(df,tag,force_writing=False):
     if tag in dicto:
         opinion_list=[]
         tager_username_list=list(dict.fromkeys([dicto[tag][1][i] for i in range (len(dicto[tag][1]))]))#liste des username qui ont tagé
-        print(tager_username_list)
         for username in tager_username_list:
             tweet_id_list=tager_username_to_tweet_id_list(df,tag,username)
-            print(tweet_id_list)
             for tweet_id in tweet_id_list:
-                opinion=get_opinion_by_id(df,tweet_id)
+                opinion=get_fake_value_by_id(df,tweet_id)
                 opinion_list.append(opinion)
         return opinion_list
     else:
         return None
+    
+def username_to_fake_value(df,username):
+    """renvoie la moyenne des fake values pour un username donné"""
+    assert type(username)==str
+    fake_value_column_id=-1
+    df_tweet=df.loc[df['user']== username]
+    if not df_tweet.empty:
+        row_number=df_tweet.shape[0]
+        fake_value_list=[]
+        for i in range(row_number):
+                fake_value=df_tweet.iloc[i,fake_value_column_id]
+                fake_value_list.append(fake_value)
+        return np.mean(fake_value_list)
+    else :
+        return 0.0
 
 
 
-if __name__=='__main__':
-    ###get_opinion_on_tag   
+if __name__=='__main__':  
     force_writing=False
     df = pd.read_csv("C:/Users/viann/Downloads/archive/training.1600000.processed.noemoticon.csv", sep=',',encoding="ISO-8859-1")
     df.columns=['target','id','date','flag','user','text']
-    dicto=graph_dict_generate(df,force_writing)
+    print(most_tweet_per_user(df))
+    '''dicto=graph_dict_generate(df,force_writing)
     opinion_list=get_opinion_on_tag(df,'HollyEgg',force_writing)
     print('this tag has been quoted {} times'.format(len(opinion_list)))
     print('In average this tag has {} in opinion'.format(np.mean(opinion_list)))
     print('this tag has {} positive opinion'.format(opinion_list.count(4)))
-    print('this tag has {} positive opinion'.format(opinion_list.count(0)))
-    #>>>In average this tag has 4.0 in opinion
+    print('this tag has {} positive opinion'.format(opinion_list.count(0)))'''

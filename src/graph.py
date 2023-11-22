@@ -39,8 +39,8 @@ def color_mapping_white_to_purple(i, N_max):
     Returns:
         string: hexadecimal color code
     """
-    normalized_value = i / N_max
-    cmap = plt.get_cmap('purples')
+    normalized_value =i / N_max
+    cmap = plt.get_cmap('Purples')
     rgba_color = cmap(normalized_value)
     hex_color = mcolors.rgb2hex(rgba_color)
     return hex_color
@@ -96,7 +96,7 @@ def dash_graph(graph_dict):
         cyto.Cytoscape(
             id='cytoscape_quotes',
             elements=elements,
-            style={'width': '100%', 'height': '600px'},
+            style={'width': '100%', 'height': '600px', 'backgroundColor': '#91A3B0'},
             layout={
                 'name': 'cose'
             },
