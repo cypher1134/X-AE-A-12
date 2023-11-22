@@ -58,14 +58,16 @@ def db_to_dataframe(cursor):
     aide = None
 
     # Get the total number of tweets
-    cursor.execute("SELECT Count() FROM tweets")
-    n = cursor.fetchone()[0]
-
+    cursor.execute("SELECT Count(*) FROM tweets")
+    
+    n= cursor.fetchone()[0]
+    print("n= "+str(n))
     # Fetch tweets from the database
     cursor.execute('SELECT * FROM tweets')
     global init_percent
     for i in range(n):
-        init_percent = round(100 * i / (n - 1))
+        
+        init_percent = round(100 * i / max(n - 1,1))
         aide = cursor.fetchone()
         aide = [0 if v is None else v for v in aide]
         data.loc[i] = aide

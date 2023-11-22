@@ -2,7 +2,6 @@ import numpy as np
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import PassiveAggressiveClassifier
-import data
 
 def predict_on_database(df, train_csv_path="../data/train.csv"):
     """
