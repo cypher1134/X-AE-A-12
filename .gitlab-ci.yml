@@ -1,7 +1,7 @@
 stages:
   - test ML
   - test data_processing
-pytest:
+pytest ML:
   stage: test ML
   script:
     - apt-get update -qy  # Update package index
@@ -9,11 +9,12 @@ pytest:
     - pip3 install -r requirements.txt  # Install dependencies
     - pip3 install pytest  # Install pytest
 
-    - pytest ./src/test_ML.py 
+    - pytest ./src/test/test_ML.py 
+pytest data_processing:
   stage: test data_processing
   script:
     - apt-get update -qy  # Update package index
     - apt-get install -y python3-pip  # Install pip for Python 3
     - pip3 install -r requirements.txt  # Install dependencies
     - pip3 install pytest  # Install pytest
-    - pytest ./src/test_data_processing.py  
+    - pytest ./src/test/test_data_processing.py  

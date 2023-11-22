@@ -55,6 +55,6 @@ def test_partial_data_accuracy():
 
     # Calculate accuracy on partial test data
     accuracy_partial_test = accuracy_score(predicted_partial_test_df["fake_value"], partial_test_df_COMP["fake_value"])
-
+    
     # Assert that the accuracy is within an acceptable range (you can customize this)
     assert accuracy_partial_test >= 0.0 and accuracy_partial_test <= 1.0
