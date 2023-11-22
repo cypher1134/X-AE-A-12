@@ -1,8 +1,11 @@
 stages:
-  - test
-
+  - test ML
+  - test data_processing
 pytest:
-  stage: test
+  stage: test ML
   script:
-    - pip install -r requirements.txt  # Install dependencies
-    - pytest ./src/test_ML.py ./src/test_data_processing.py  # Run specific test files
+    - pip install -r requirements.txt 
+    - pytest ./src/test_ML.py 
+  stage: test data_processing
+  script:
+    - pytest ./src/test_data_processing.py  
