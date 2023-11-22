@@ -72,7 +72,12 @@ def graph_dict_generate(df,force_writing=False):
     tag_dict=tag_count_dict(df,force_writing)
     print('-----Creating graph dictionnary-----')
     for username in tqdm(tag_dict):
-        graph_dict[username]=(tag_dict[username][0],list_to_doublons_description(tag_dict[username][1]))
+        tager_username_list=list_to_doublons_description(tag_dict[username][1])
+        graph_dict[username]=(tag_dict[username][0],tager_username_list)
+        
+        for tager_username in [tager_username_list[i][0] for i in range(len(tager_username_list))]:
+            if tager_username not in tag_dict:
+                graph_dict[tager_username]=(0,[])
     return graph_dict
     
 def list_to_doublons_description(mylist):

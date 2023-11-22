@@ -16,8 +16,8 @@ import matplotlib.colors as mcolors
 
 
 def color_mapping(i, N_max):
-    normalized_value = i / N_max
-    cmap = plt.get_cmap('YlOrRd')
+    normalized_value = 1 - i / N_max
+    cmap = plt.get_cmap('autumn')
     rgba_color = cmap(normalized_value)
     hex_color = mcolors.rgb2hex(rgba_color)
     return hex_color
@@ -29,11 +29,11 @@ def graph_from_dict(dict):
     for key in dict:
         (n, tag_list) = dict[key]
         nodes.append({
-            'data': {'id': key, 'label': key, 'number_links': n, 'size': 20 * math.log(n+2)},
+            'data': {'id': key, 'label': key, 'number_links': n, 'size': 20 * math.log(n+2),"font_size": 8*math.log(n+2)},
         })
         for (tag, weight) in tag_list:
             edges.append(
-                {'data': {'source': tag, 'target': key, 'weight': weight, 'color': color_mapping(weight, 70)}})
+                {'data': {'source': tag, 'target': key, 'weight': weight, 'color': color_mapping(weight, 5)}})
     return nodes + edges
 
 
@@ -54,7 +54,7 @@ def dash_graph(graph_dict):
                     "width": "data(size)",
                     "height": "data(size)",
                     "content": "data(label)",
-                    "font-size": "10px",
+                    "font-size": "data(font_size)",
                     "text-valign": "center",
                     "text-halign": "center",
                 }
@@ -68,15 +68,19 @@ def dash_graph(graph_dict):
                     'line-color': 'data(color)',
 
                 },
+                
             },
+            {
+                'selector': '[number_links <= 10]',
+                'style': {
+                    "content": "",
+                }
+            },
+            
 
         ]
     )
 ])
-
-
-
-
 
 
 
