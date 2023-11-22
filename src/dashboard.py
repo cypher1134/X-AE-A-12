@@ -22,9 +22,9 @@ def dataframe_unix_to_day(df):
 def dataframe_select_period(df, begin, end):
     tdf = df.copy()
     if begin != "":
-        tdf = tdf[tdf.date >= int(begin)]
+        tdf = tdf[tdf.date >= int(begin) + 3600]
     if end != "":
-        tdf = tdf[tdf.date <= int(end)]
+        tdf = tdf[tdf.date <= int(end) + 86400]
     return tdf
 
 def tweet_count_hist(df, begin="", end=""):

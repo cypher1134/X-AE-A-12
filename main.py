@@ -33,7 +33,7 @@ if __name__ == "__main__":
             dbc.Tab(label="Search", tab_id="tab-2"),
         ], id="tabs", active_tab="tab-1"),
         dbc.Collapse([dbc.Row([
-            dbc.Card("Search and adjust your parameters", body=True),
+            dbc.Alert("Search and adjust your parameters", color="secondary"),
             dbc.Col([
                 dbc.InputGroup([
                     dbc.InputGroupText("Search"), 
@@ -45,7 +45,6 @@ if __name__ == "__main__":
                 dbc.Checklist(options=[{"label": "all period", "value": 1}], value=[1], id="date-switch", switch=True),
             ], width = {"size": 4, "offset": 2}, align = "center", style={"margin-top": "30px"})
         ], style={"margin-top": "30px", "margin-left": "15px", "margin-right": "15px"}, justify="center")], id="collapse_search", is_open=False),
-        html.Br(),
         dbc.CardBody(dbc.Row([
             dbc.Col([
                 dbc.CardHeader("General informations"),
@@ -55,9 +54,9 @@ if __name__ == "__main__":
                 dbc.Row([
                     dbc.Col([
                         dbc.CardHeader("Interactions stats"),
-                        dbc.Row(dcc.Graph(figure={}, id='view'), style={"height": "150px"}),
-                        dbc.Row(dcc.Graph(figure={}, id='retweet'), style={"height": "150px"}),
-                        dbc.Row(dcc.Graph(figure={}, id='like'), style={"height": "150px"}),
+                        dbc.Row(dcc.Graph(figure={}, id='view'), style={"height": "130px"}),
+                        dbc.Row(dcc.Graph(figure={}, id='retweet'), style={"height": "130px"}),
+                        dbc.Row(dcc.Graph(figure={}, id='like'), style={"height": "130px"}),
                     ], className="g-0", style={"maxHeight": "350px", "overflow": "scroll", 'max-width': '100%', 'overflow-x': 'hidden'}, width = 8),
                     dbc.Col(dcc.Graph(figure={}, id='share'), className="g-0", width = 4),
                 ], style={"maxHeight": "350px"}),
@@ -67,7 +66,7 @@ if __name__ == "__main__":
                 ]),
             ], width=8),
         ])),
-    ], className="g-0")], style={'max-width': '100%', 'overflow-x': 'hidden'})
+    ], className="g-0", style={'height':'100vh'})], style={'max-width': '100%', 'overflow-x': 'hidden'})
 
     @app.callback(
         Output("progressbar_init", "value"),
