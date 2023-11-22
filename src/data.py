@@ -2,15 +2,18 @@ import pandas as pd
 import sqlite3
 from tqdm import tqdm
 import time
+from src import FN
 
 
 n=0
 init_percent = 0
 raw_data = None
+training_model = False
 
 def db_thread(path, savepath="./data/raw_data.json", force_writing=False):
     global raw_data
     global init_percent
+    global training_model
     if not force_writing:
         try :
             raw_data=pd.read_json(savepath, convert_dates=False)
@@ -23,9 +26,12 @@ def db_thread(path, savepath="./data/raw_data.json", force_writing=False):
         db_cursor = db_conn.cursor()
         raw_data = db_to_dataframe(db_cursor)
         raw_data['date'] = raw_data['date'].apply(twi_time_to_unix)
-        raw_data['fake_value'] = update_fake_value(raw_data)  
+        raw_data['fake_value'] = update_fake_value(raw_data)
+        training_model = True
+        raw_data = FN.predict_on_database(raw_data)
         raw_data.to_json(savepath)
         print('-----Raw_data registered-----')
+        training_model = False
     init_percent = 100
 
 
@@ -35,6 +41,9 @@ def db_to_dataframe(cursor):
     aide=None
     cursor.execute("SELECT Count() FROM tweets")
     n=cursor.fetchone()[0]
+    ###################
+    n=10000
+    ###################
     cursor.execute('SELECT * FROM tweets')
     global init_percent
     for i in range(n):
@@ -48,4 +57,4 @@ def twi_time_to_unix(time_str):
     return time.mktime(time.strptime(time_str, "%Y-%m-%d %H:%M:%S+00:00"))
 
 def update_fake_value(data):
-    return ['FAKE'] * len(data)
+    return ['TRUE'] * len(data)

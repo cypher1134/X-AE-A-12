@@ -26,7 +26,7 @@ if __name__ == "__main__":
     app = Dash(__name__, external_stylesheets=[dbc.themes.DARKLY, dbc_css])
 
     app.layout = html.Div([dbc.Card([
-        dbc.Collapse(dbc.Progress(value=50, id="progressbar_init"), id="collapse_bar", is_open=False),
+        dbc.Collapse(dbc.Progress(value=50, id="progressbar_init", striped=False, animated=True), id="collapse_bar", is_open=False),
         dcc.Interval(id='clock', interval=1000, n_intervals=0, max_intervals=-1),
         dbc.Tabs([
             dbc.Tab(label="Graphs", tab_id="tab-1"),
@@ -47,8 +47,10 @@ if __name__ == "__main__":
         ], style={"margin-top": "30px", "margin-left": "15px", "margin-right": "15px"}, justify="center")], id="collapse_search", is_open=False),
         dbc.CardBody(dbc.Row([
             dbc.Col([
-                dbc.CardHeader("General informations"),
+                dbc.CardHeader("Tweets per day"),
                 dbc.Row(dcc.Graph(figure={}, id='tweet_count'), style={"height": "400px"}),
+                dbc.CardHeader("Fake news percentage"),
+                dbc.Row(dcc.Graph(figure={}, id='fake_perc'), style={"height": "300px"})
             ], width=4),
             dbc.Col([
                 dbc.Row([
@@ -58,7 +60,7 @@ if __name__ == "__main__":
                         dbc.Row(dcc.Graph(figure={}, id='retweet'), style={"height": "130px"}),
                         dbc.Row(dcc.Graph(figure={}, id='like'), style={"height": "130px"}),
                     ], className="g-0", style={"maxHeight": "350px", "overflow": "scroll", 'max-width': '100%', 'overflow-x': 'hidden'}, width = 8),
-                    dbc.Col(dcc.Graph(figure={}, id='share'), className="g-0", width = 4),
+                    dbc.Col(dcc.Graph(figure={}, id='fake_line'), className="g-0", width = 4),
                 ], style={"maxHeight": "350px"}),
                 dbc.Row([
                     dbc.Col(dcc.Graph(figure={}, id='fakelnewsss'), className="g-0"),
@@ -71,12 +73,16 @@ if __name__ == "__main__":
     @app.callback(
         Output("progressbar_init", "value"),
         Output("progressbar_init", "label"),
+        Output("progressbar_init", "striped"),
+        Output("progressbar_init", "animated"),
         Output("collapse_bar", "is_open"),
         Output("clock", "max_intervals"),
         Output('tweet_count', 'figure'),
         Output('like', 'figure'),
         Output('retweet', 'figure'),
         Output('view', 'figure'),
+        Output('fake_perc', 'figure'),
+        Output('fake_line', 'figure'),
         Output("date-picker-range", "disabled"),
         Input("clock", "n_intervals"),
         Input('search', 'value'),
@@ -86,34 +92,42 @@ if __name__ == "__main__":
     )
     def progress_bar_update(n, search, begin_date, end_date, date_switch):
         date_switch_state = bool(len(date_switch))
-        if data.init_percent == 100:
+        if data.init_percent >= 100 and data.training_model == False:
             collapse_bar = False
             clock_stat = 0
             df_search = dashboard.dataframe_search(data.raw_data, "text", str(search or '', ))
             if date_switch_state:
+                fake_perc_figure, fake_line_figure = dashboard.fake_pie_line(df_search)
                 tweet_count_figure = dashboard.tweet_count_hist(df_search)
                 like_count_figure, retweet_count_figure, view_count_figure  = dashboard.like_retweet_view_count_line(df_search)
             else:
                 unix_begin_date, unix_end_date = date_iso_to_unix(begin_date, end_date)
+                fake_perc_figure, fake_line_figure = dashboard.fake_pie_line(df_search, unix_begin_date, unix_end_date)
                 tweet_count_figure = dashboard.tweet_count_hist(df_search, unix_begin_date, unix_end_date)
                 like_count_figure, retweet_count_figure, view_count_figure = dashboard.like_retweet_view_count_line(df_search, unix_begin_date, unix_end_date)
+            fake_perc_figure.update_layout(margin=dict(l=2, r=2, t=10, b=2))
             like_count_figure.update_layout(xaxis=dict(showgrid=False),yaxis=dict(showgrid=True),showlegend=False, xaxis_visible=False, xaxis_showticklabels=False, yaxis_title="likes", margin=dict(l=2, r=10, t=2, b=2))
             view_count_figure.update_layout(xaxis=dict(showgrid=False),yaxis=dict(showgrid=False),showlegend=False, xaxis_visible=False, xaxis_showticklabels=False, yaxis_title="views", margin=dict(l=2, r=10, t=2, b=2))
             retweet_count_figure.update_layout(xaxis=dict(showgrid=False),yaxis=dict(showgrid=False),showlegend=False, xaxis_visible=False, xaxis_showticklabels=False, yaxis_title="retweets", margin=dict(l=10, r=2, t=2, b=2))
         else :
             collapse_bar = True
             clock_stat = -1
+            fake_perc_figure, fake_line_figure = None, None
             tweet_count_figure = None
             like_count_figure, retweet_count_figure, view_count_figure = None, None, None
         return (
             data.init_percent, 
-            str(data.init_percent) + ' %', 
+            str(data.init_percent) + ' %',
+            data.training_model,
+            data.training_model,
             collapse_bar, 
             clock_stat, 
             tweet_count_figure, 
             like_count_figure, 
             retweet_count_figure, 
             view_count_figure, 
+            fake_perc_figure,
+            fake_line_figure,
             date_switch_state
         )
 
