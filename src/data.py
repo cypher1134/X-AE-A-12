@@ -5,6 +5,14 @@ import time
 from datetime import datetime
 
 def db_to_dataframe(cursor):
+    """Converts a SQL dabase, provided a cursor, into a Dataframe
+
+    Args:
+        cursor (sqlite3.Cursor): Cursor from sqlite3 which points to the scrap.db database
+
+    Returns:
+        data (pandas.Dataframe): Dataframe which corresponds to the SQL database
+    """
     assert type(cursor)==sqlite3.Cursor,('the argument is not a cursor')
     columns=['id','user','text','view','like','retweet','date','fake_value']
     data=pd.DataFrame(columns=['id','user','text','view','like','retweet','date','fake_value'])
@@ -21,6 +29,14 @@ def db_to_dataframe(cursor):
     return  data
 
 def twi_time_to_unix(time_str):
+    """Converts twin time format to unix time format
+
+    Args:
+        time_str (str): value of database in 'time' axis in twin time format
+
+    Returns:
+        str : time in unix time format
+    """
     return time.mktime(time.strptime(time_str, "%Y-%m-%d %H:%M:%S+00:00"))
     
 

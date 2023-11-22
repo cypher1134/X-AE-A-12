@@ -6,7 +6,6 @@ import sqlite3
 from dash import Dash
 from src import graph
 from src import parcours
-#username possible [realDonaldTrump,ProjectLincoln,LauraLoomer,GenFlynn,the_trump_train]
 if __name__ == "__main__":
     force_writing=False
     if not force_writing:  

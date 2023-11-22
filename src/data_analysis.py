@@ -77,14 +77,13 @@ def graph_dict_generate(df,force_writing=False):
         except Exception as e :
             print(e)
             graph_dict=None
-    if force_writing or graph_dict==None:
+    if force_writing or graph_dict==None :
         graph_dict={}
         tag_dict=tag_count_dict(df,force_writing)
         print('-----Creating graph dictionnary-----')
         for username in tqdm(tag_dict):
-            tager_username_list=list_to_doublons_description(tag_dict[username][1])
-            graph_dict[username]=(tag_dict[username][0],tager_username_list,username_to_fake_value(df,username))
-            
+            tager_username_list = list_to_doublons_description( tag_dict[username][1])
+            graph_dict[username] = (tag_dict[username][0],tager_username_list,username_to_fake_value(df,username))
             for tager_username in [tager_username_list[i][0] for i in range(len(tager_username_list))]:
                 if tager_username not in tag_dict:
                     graph_dict[tager_username]=(0,[],username_to_fake_value(df,tager_username))
@@ -104,7 +103,7 @@ def list_to_doublons_description(mylist):
 
     """
     list_description=[]
-    list_description_drop_duplicates=list(dict.fromkeys(mylist))
+    list_description_drop_duplicates=list(dict.fromkeys(mylist) )
     for user in  list_description_drop_duplicates:
         list_description.append((user,mylist.count(user)))
     return list_description
@@ -120,7 +119,7 @@ def list_to_doublons_description(mylist):
 #print('id des tweets avec le tag {} :'.format(list(dicto.keys())[0]), list(dicto.values())[0][1]) 
 
 def tager_username_to_tweet_id_list(df, tag, username) :
-    """renvoie la list des tweet_id des tweets qui viennent d'un username et qui contiennent le tag"""
+    """renvoie la list des tweet_id des tweets qui viennent d'un username et qui contiennent le tag en argument"""
     assert type(username) == str
     n_column_id = 0  
     n_column_text = 2
@@ -140,35 +139,6 @@ def tager_username_to_tweet_id_list(df, tag, username) :
 
 
 
-def get_fake_value_by_id(df,tweet_id):
-    """Renvoie l'opinion d'un tweet avec son tweet_id"""
-    assert type(tweet_id)==int
-    try :
-        opinion=(df.loc[df['id'] == tweet_id]['fake_value'].iloc[0])
-        return opinion
-    except Exception as e:
-        print(e)
-        return None
-###test get_opinion_by_id
-#print(get_opinion_by_id(1467810917))
-#>>>0    
-
-
-
-def get_opinion_on_tag(df,tag,force_writing=False):
-    '''tag est sans @'''
-    dicto=tag_count_dict(df,force_writing)
-    if tag in dicto:
-        opinion_list=[]
-        tager_username_list=list(dict.fromkeys([dicto[tag][1][i] for i in range (len(dicto[tag][1]))]))#liste des username qui ont tagé
-        for username in tager_username_list:
-            tweet_id_list=tager_username_to_tweet_id_list(df,tag,username)
-            for tweet_id in tweet_id_list:
-                opinion=get_fake_value_by_id(df,tweet_id)
-                opinion_list.append(opinion)
-        return opinion_list
-    else:
-        return None
     
 def username_to_fake_value(df,username):
     """renvoie la moyenne des fake values pour un username donné"""

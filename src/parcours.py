@@ -2,7 +2,7 @@ import pandas as pd
 
 def select_biggest_connected_graph(dico_tag,main_node):
     
-"""
+    """
     Performs a depth-first search traversal on a graph represented by the dico dictionary 
        starting the search from the point max and returns the biggest connected graph containing max
     Args :
@@ -34,7 +34,7 @@ def select_biggest_connected_graph(dico_tag,main_node):
 
 
 def liste_to_df(df,liste):
-     """
+    """
     Creates a new dataframe that contains all the data related to users in list
     Args:
         df(DataFrame): the initial database
