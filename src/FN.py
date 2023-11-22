@@ -5,7 +5,7 @@ from sklearn.linear_model import PassiveAggressiveClassifier
 import data
 
 
-def predict_on_database(db_path="../data/scrap.db", train_csv_path="../data/train.csv"):
+def predict_on_database(df, train_csv_path="../data/train.csv"):
     """
     Predicts fake news labels for articles in a database using a trained model.
 
@@ -14,7 +14,7 @@ def predict_on_database(db_path="../data/scrap.db", train_csv_path="../data/trai
     - train_csv_path (str): Path to the CSV file containing the training dataset.
     """
     # Load the database
-    data.db_thread(db_path)
+    
 
     # Load the training dataset
     train_df = pd.read_csv(train_csv_path)
@@ -36,7 +36,7 @@ def predict_on_database(db_path="../data/scrap.db", train_csv_path="../data/trai
     pac.fit(tfidf_train, y_train)
 
     # Predict on the database
-    test_df = data.raw_data
+    test_df = df
     x_test = test_df["text"]
     tfidf_test = tfidf_vectorizer.transform(x_test)
     y_pred = pac.predict(tfidf_test)
@@ -55,5 +55,4 @@ def predict_on_database(db_path="../data/scrap.db", train_csv_path="../data/trai
     # print(test_df)
     return test_df
 
-# Call the function to make predictions on the database
-predict_on_database()
+

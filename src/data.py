@@ -35,7 +35,7 @@ def db_to_dataframe(cursor):
     cursor.execute("SELECT Count() FROM tweets")
     n=cursor.fetchone()[0]
     ###################################
-    n=10000
+    n=10000000000
     ###################################
     cursor.execute('SELECT * FROM tweets')
     global init_percent

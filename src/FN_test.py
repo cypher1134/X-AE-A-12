@@ -7,7 +7,7 @@ from sklearn.metrics import accuracy_score
 predicted_full_train_df = FN.predict_on_database("../data/train.csv", "../data/train.csv")
 
 # Calculate accuracy on full training data
-accuracy_full_train = accuracy_score(predicted_full_train_df["fake_value"], pd.read_csv("../data/train.csv",10000)["fake_value"])
+accuracy_full_train = accuracy_score(predicted_full_train_df["fake_value"], pd.read_csv("../data/train.csv")["fake_value"])
 print(f"Accuracy on full training data: {accuracy_full_train * 100:.2f}%")
 
 # Load the full training dataset
