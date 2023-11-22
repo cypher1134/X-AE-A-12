@@ -20,34 +20,34 @@ class MockSQLiteCursor:
     def set_query_results(self, results):
         self.query_results = results
 
-# def test_db_to_dataframe():
-#     # Connect to the SQLite database
-#     connection = sqlite3.connect('../data/scrap.db')
-#     cursor = connection.cursor()
+def test_db_to_dataframe():
+    # Connect to the SQLite database
+    connection = sqlite3.connect('../data/scrap.db')
+    cursor = connection.cursor()
 
-#     # Fetch the actual number of rows in the table
-#     cursor.execute("SELECT COUNT(*) FROM tweets") 
-#     actual_num_rows = cursor.fetchone()[0]
+    # Fetch the actual number of rows in the table
+    cursor.execute("SELECT COUNT(*) FROM tweets") 
+    actual_num_rows = cursor.fetchone()[0]
 
-#     # Execute a SELECT query to fetch data
-#     cursor.execute("SELECT * FROM tweets")  
-#     query_results = cursor.fetchall()
+    # Execute a SELECT query to fetch data
+    cursor.execute("SELECT * FROM tweets")  
+    query_results = cursor.fetchall()
 
-#     # Ensure the function returns a DataFrame
-#     result = db_to_dataframe(cursor)
+    # Ensure the function returns a DataFrame
+    result = db_to_dataframe(cursor)
 
-#     # Check if the result is a DataFrame
-#     assert isinstance(result, pd.DataFrame)
+    # Check if the result is a DataFrame
+    assert isinstance(result, pd.DataFrame)
 
-#     # Check if the DataFrame has the expected columns
-#     expected_columns = ['id', 'user', 'text', 'view', 'like', 'retweet', 'date']
-#     assert result.columns.tolist() == expected_columns
+    # Check if the DataFrame has the expected columns
+    expected_columns = ['id', 'user', 'text', 'view', 'like', 'retweet', 'date']
+    assert result.columns.tolist() == expected_columns
 
-#     # Check if the DataFrame has the expected number of rows
-#     assert len(result) == actual_num_rows
+    # Check if the DataFrame has the expected number of rows
+    assert len(result) == actual_num_rows
 
-#     # Close the connection
-#     connection.close()
+    # Close the connection
+    connection.close()
 
 
 def test_twi_time_to_unix():
