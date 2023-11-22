@@ -13,17 +13,18 @@ def db_thread(path, savepath="data/raw_data.json", force_writing=False):
     if not force_writing:
         try :
             raw_data=pd.read_json(savepath)
+            print(raw_data)
             print('-----Finished to load raw_data-----')
         except Exception as e:
             print(e)
             raw_data=None
-    if force_writing or raw_data is not None :
+    if force_writing or raw_data is None :
         db_conn = sqlite3.connect(path)
         db_cursor = db_conn.cursor()
         raw_data = db_to_dataframe(db_cursor)
+        raw_data['date'] = raw_data['date'].apply(twi_time_to_unix)
         raw_data.to_json(savepath)
         print('-----Raw_data registered-----')
-    raw_data['date'] = raw_data['date'].apply(twi_time_to_unix)
     init_percent = 100
 
 
