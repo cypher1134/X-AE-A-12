@@ -16,7 +16,7 @@ def db_thread(path, savepath="data/raw_data.json", force_writing=False):
         except Exception as e:
             print(e)
             raw_data=None
-    if force_writing or raw_data.empty :
+    if force_writing or raw_data == None :
         db_conn = sqlite3.connect(path)
         db_cursor = db_conn.cursor()
         raw_data = db_to_dataframe(db_cursor)
