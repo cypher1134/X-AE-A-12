@@ -52,7 +52,7 @@ def test_partial_data_accuracy():
     partial_test_df.to_csv(partial_test, index=False)
 
     # Use the 'predict_on_database' function to predict fake news labels and probabilities on the partial test dataset
-    predicted_partial_test_df = ML.predict_on_database(partial_test_df, "../../data/partial_train.csv")
+    predicted_partial_test_df = ML.predict_on_database(partial_test_df, partial_train)
 
     # Calculate accuracy on partial test data
     accuracy_partial_test = accuracy_score(predicted_partial_test_df["fake_value"], partial_test_df_COMP["fake_value"])
