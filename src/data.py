@@ -24,7 +24,6 @@ def db_thread(path, savepath="./data/raw_data.json", force_writing=False):
         raw_data['date'] = raw_data['date'].apply(twi_time_to_unix)
         raw_data.to_json(savepath)
         print('-----Raw_data registered-----')
-    print(raw_data)
     init_percent = 100
 
 

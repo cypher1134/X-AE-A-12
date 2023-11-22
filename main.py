@@ -25,7 +25,7 @@ if __name__ == "__main__":
     dbc_css = "https://cdn.jsdelivr.net/gh/AnnMarieW/dash-bootstrap-templates/dbc.min.css"
     app = Dash(__name__, external_stylesheets=[dbc.themes.DARKLY, dbc_css])
 
-    app.layout = html.Div([
+    app.layout = html.Div([dbc.Card([
         dbc.Collapse(dbc.Progress(value=50, id="progressbar_init"), id="collapse_bar", is_open=False),
         dcc.Interval(id='clock', interval=1000, n_intervals=0, max_intervals=-1),
         dbc.Tabs([
@@ -45,30 +45,29 @@ if __name__ == "__main__":
                 dbc.Checklist(options=[{"label": "all period", "value": 1}], value=[1], id="date-switch", switch=True),
             ], width = {"size": 4, "offset": 2}, align = "center", style={"margin-top": "30px"})
         ], style={"margin-top": "30px", "margin-left": "15px", "margin-right": "15px"}, justify="center")], id="collapse_search", is_open=False),
-        dbc.Card([
-            dbc.Row([
-                dbc.Col([
-                    dbc.CardHeader("General informations"),
-                    dbc.Row(dcc.Graph(figure={}, id='tweet_count'), style={"height": "400px"}),
-                ], width=4),
-                dbc.Col([
-                    dbc.Row([
-                        dbc.Col([
-                            dbc.CardHeader("Interactions stats"),
-                            dbc.Row(dcc.Graph(figure={}, id='view'), style={"height": "150px"}),
-                            dbc.Row(dcc.Graph(figure={}, id='retweet'), style={"height": "150px"}),
-                            dbc.Row(dcc.Graph(figure={}, id='like'), style={"height": "150px"}),
-                        ], className="g-0", style={"maxHeight": "350px", "overflow": "scroll", 'max-width': '100%', 'overflow-x': 'hidden'}, width = 8),
-                        dbc.Col(dcc.Graph(figure={}, id='share'), className="g-0", width = 4),
-                    ], style={"maxHeight": "350px"}),
-                    dbc.Row([
-                        dbc.Col(dcc.Graph(figure={}, id='fakelnewsss'), className="g-0"),
-                        dbc.Col(dcc.Graph(figure={}, id='fakenews'), className="g-0"),
-                    ]),
-                ], width=8)
-            ]),
-        ], className="mt-3")
-    ], style={'max-width': '100%', 'overflow-x': 'hidden'})
+        html.Br(),
+        dbc.CardBody(dbc.Row([
+            dbc.Col([
+                dbc.CardHeader("General informations"),
+                dbc.Row(dcc.Graph(figure={}, id='tweet_count'), style={"height": "400px"}),
+            ], width=4),
+            dbc.Col([
+                dbc.Row([
+                    dbc.Col([
+                        dbc.CardHeader("Interactions stats"),
+                        dbc.Row(dcc.Graph(figure={}, id='view'), style={"height": "150px"}),
+                        dbc.Row(dcc.Graph(figure={}, id='retweet'), style={"height": "150px"}),
+                        dbc.Row(dcc.Graph(figure={}, id='like'), style={"height": "150px"}),
+                    ], className="g-0", style={"maxHeight": "350px", "overflow": "scroll", 'max-width': '100%', 'overflow-x': 'hidden'}, width = 8),
+                    dbc.Col(dcc.Graph(figure={}, id='share'), className="g-0", width = 4),
+                ], style={"maxHeight": "350px"}),
+                dbc.Row([
+                    dbc.Col(dcc.Graph(figure={}, id='fakelnewsss'), className="g-0"),
+                    dbc.Col(dcc.Graph(figure={}, id='fakenews'), className="g-0"),
+                ]),
+            ], width=8),
+        ])),
+    ], className="g-0")], style={'max-width': '100%', 'overflow-x': 'hidden'})
 
     @app.callback(
         Output("progressbar_init", "value"),
