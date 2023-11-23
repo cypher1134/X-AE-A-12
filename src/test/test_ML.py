@@ -63,3 +63,7 @@ def test_partial_data_accuracy():
 
     # Assert that the accuracy is within an acceptable range 
     assert 0.4 <= accuracy_partial_test <= 1.0
+
+
+test_full_data_accuracy()
+test_partial_data_accuracy()

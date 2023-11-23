@@ -33,7 +33,7 @@ def predict_on_database(df, train_csv_path=data_file):
     df["fake_value"] = y_pred
     df["confidence"] = probabilities
     for i, conf in enumerate(df["confidence"]):
-        if conf < 0.4 and  df.iloc[i,-2]=="FAKE":
+        if conf < 0.3 and  df.iloc[i,-2]=="FAKE":
             df.iloc[i,-2]="REAL"
     
     real_count = np.sum(df["fake_value"] == "REAL")
