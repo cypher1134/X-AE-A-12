@@ -21,7 +21,7 @@ train_data_file = os.path.abspath(os.path.join(root, 'data','train.csv'))
 partial_train = os.path.abspath(os.path.join(root, 'data', 'partial_train.csv'))
 partial_test = os.path.abspath(os.path.join(root, 'data', 'partial_test.csv'))
 
-print(train_data_file)
+
 
 def test_full_data_accuracy():
     # Load the full training dataset
@@ -35,12 +35,11 @@ def test_full_data_accuracy():
     accuracy_full_test = accuracy_score(predicted_full_test_df["fake_value"], df_Full_test_COMP["fake_value"])
 
     # Print the accuracy
-    print(f"Accuracy on full test data: {accuracy_full_test}")
+    print(f"Accuracy on full test data: {accuracy_full_test*100}")
 
     # Assert that the accuracy is within an acceptable range (you can customize this)
     assert 0.0 <= accuracy_full_test <= 1.0
 
-test_full_data_accuracy()
 def test_partial_data_accuracy():
     # Load the full training dataset
     df_Full_test = pd.read_csv(train_data_file)
@@ -61,7 +60,7 @@ def test_partial_data_accuracy():
     accuracy_partial_test = accuracy_score(predicted_partial_test_df["fake_value"], partial_test_df_COMP["fake_value"])
 
     # Print the accuracy
-    print(f"Accuracy on partial test data: {accuracy_partial_test}")
+    print(f"Accuracy on partial test data: {accuracy_partial_test*100}")
 
     # Assert that the accuracy is within an acceptable range (you can customize this)
     assert 0.0 <= accuracy_partial_test <= 1.0
