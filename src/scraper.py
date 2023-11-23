@@ -2,8 +2,17 @@ import asyncio
 from twscrape import API, gather
 from twscrape.logger import set_log_level
 import sqlite3
+import sys
+import os
+# Getting the name of the directory where this file is present.
+current = os.path.dirname(os.path.realpath(__file__))
+# Getting the parent directory name where the current directory is present.
+root = os.path.dirname(current)
+# Adding the parent directory to the sys.path.
+sys.path.append(root)
 
-connection = sqlite3.connect("data/scrap.db")
+
+connection = os.path.abspath(os.path.join(root, 'data', "scrab.db.csv"))
 cursor = connection.cursor()
 
 async def main():
