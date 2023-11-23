@@ -3,9 +3,10 @@ from tqdm import tqdm
 import json
 import numpy as np
 import data
+from src import parcours
 
 def most_tweet_per_user(df):
-    return df.groupby(['user'])['id'].count().sort_values(ascending=False).tolist()[0]
+    return df.groupby(['user'])['id'].count().sort_values(ascending=False).idxmax()
 ###test tweet_per_user
 #print(most_tweet_per_user(df))
 
@@ -48,7 +49,7 @@ def tag_count(df,tag:str,force_writing=False):
     return tag_list.count(tag[1:])
 #print('@HollyEgg',tag_count(df,'@HollyEgg'))
 
-def tag_count_dict(df,force_writing=False):
+def tag_count_dict ( df , force_writing = False ) :
     tag_list=get_all_tag(df,force_writing)
     print('-----Finished to get all tags-----')
     tag_dict={}
@@ -68,17 +69,31 @@ def tag_count_dict(df,force_writing=False):
     
     
 def graph_dict_generate(df,force_writing=False):
-    graph_dict={}
-    tag_dict=tag_count_dict(df,force_writing)
-    print('-----Creating graph dictionnary-----')
-    for username in tqdm(tag_dict):
-        tager_username_list=list_to_doublons_description(tag_dict[username][1])
-        graph_dict[username]=(tag_dict[username][0],tager_username_list,username_to_fake_value(df,username))
-        
-        for tager_username in [tager_username_list[i][0] for i in range(len(tager_username_list))]:
-            if tager_username not in tag_dict:
-                graph_dict[tager_username]=(0,[],username_to_fake_value(df,tager_username))
-    print('-----Finished creating graph dictionnary-----')
+    
+    if not force_writing:
+        try :
+            with open('./data/graph_dict.txt',"r") as fp:
+                graph_dict=json.load(fp)
+        except Exception as e :
+            print(e)
+            graph_dict=None
+    if force_writing or graph_dict==None :
+        graph_dict={}
+        tag_dict=tag_count_dict(df,force_writing)
+        print('-----Creating graph dictionnary-----')
+        for username in tqdm(tag_dict):
+            tager_username_list = list_to_doublons_description( tag_dict[username][1])
+            graph_dict[username] = (tag_dict[username][0],tager_username_list,username_to_fake_value(df,username))
+            for tager_username in [tager_username_list[i][0] for i in range(len(tager_username_list))]:
+                if tager_username not in tag_dict:
+                    graph_dict[tager_username]=(0,[],username_to_fake_value(df,tager_username))
+        print('-----Finished creating graph dictionnary-----')
+        try :
+            with open('./data/graph_dict.txt',"w") as fp:
+                json.dump(graph_dict,fp)
+                print('-----Graph_dict is registered-----')
+        except :
+            pass
     return graph_dict
     
 def list_to_doublons_description(mylist):
@@ -88,7 +103,7 @@ def list_to_doublons_description(mylist):
 
     """
     list_description=[]
-    list_description_drop_duplicates=list(dict.fromkeys(mylist))
+    list_description_drop_duplicates=list(dict.fromkeys(mylist) )
     for user in  list_description_drop_duplicates:
         list_description.append((user,mylist.count(user)))
     return list_description
@@ -103,19 +118,19 @@ def list_to_doublons_description(mylist):
 #print('nombre de tweet avec le tag {} :'.format(list(dicto.keys())[0]), list(dicto.values())[0][0])
 #print('id des tweets avec le tag {} :'.format(list(dicto.keys())[0]), list(dicto.values())[0][1]) 
 
-def tager_username_to_tweet_id_list(df,tag,username):
-    """renvoie la list des tweet_id des tweets qui viennent d'un username et qui contiennent le tag"""
-    assert type(username)==str
-    n_column_id=0  
-    n_column_text=2
-    df_tweet=df.loc[df['user']== username]
-    row_number=df_tweet.shape[0]
-    tweet_id_list=[]
-    for i in range(row_number):
-            tweet_text=df_tweet.iloc[i,n_column_text]
-            tweet_id=df_tweet.iloc[i,n_column_id]
-            word_list=tweet_text.split(' ')
-            if '@'+tag in word_list:
+def tager_username_to_tweet_id_list(df, tag, username) :
+    """renvoie la list des tweet_id des tweets qui viennent d'un username et qui contiennent le tag en argument"""
+    assert type(username) == str
+    n_column_id = 0  
+    n_column_text = 2
+    df_tweet = df.loc[df['user'] == username]
+    row_number = df_tweet.shape[0]
+    tweet_id_list = []
+    for i in range(row_number) :
+            tweet_text = df_tweet.iloc[i,n_column_text]
+            tweet_id = df_tweet.iloc[i,n_column_id]
+            word_list = tweet_text.split(' ')
+            if '@'+ tag in word_list :
                 tweet_id_list.append(int(tweet_id))
     return tweet_id_list
 ###test tager_username_to_tweet_id_list
@@ -124,40 +139,11 @@ def tager_username_to_tweet_id_list(df,tag,username):
 
 
 
-def get_fake_value_by_id(df,tweet_id):
-    """Renvoie l'opinion d'un tweet avec son tweet_id"""
-    assert type(tweet_id)==int
-    try :
-        opinion=(df.loc[df['id'] == tweet_id]['fake_value'].iloc[0])
-        return opinion
-    except Exception as e:
-        print(e)
-        return None
-###test get_opinion_by_id
-#print(get_opinion_by_id(1467810917))
-#>>>0    
-
-
-
-def get_opinion_on_tag(df,tag,force_writing=False):
-    '''tag est sans @'''
-    dicto=tag_count_dict(df,force_writing)
-    if tag in dicto:
-        opinion_list=[]
-        tager_username_list=list(dict.fromkeys([dicto[tag][1][i] for i in range (len(dicto[tag][1]))]))#liste des username qui ont tagé
-        for username in tager_username_list:
-            tweet_id_list=tager_username_to_tweet_id_list(df,tag,username)
-            for tweet_id in tweet_id_list:
-                opinion=get_fake_value_by_id(df,tweet_id)
-                opinion_list.append(opinion)
-        return opinion_list
-    else:
-        return None
     
 def username_to_fake_value(df,username):
     """renvoie la moyenne des fake values pour un username donné"""
     assert type(username)==str
-    fake_value_column_id=-1
+    fake_value_column_id=7
     df_tweet=df.loc[df['user']== username]
     if not df_tweet.empty:
         row_number=df_tweet.shape[0]
