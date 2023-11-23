@@ -35,11 +35,6 @@ Clone the `git` repository on your computer with `git clone https`.
 
 Install all needed packages by running `pip install -r requirements.txt`.
 
-<!-- Download the dataset on : <span style = 'background-color : red; color : white'> insert url here </span>.
-
-Move the `.csv` file into the folder `./data`.
-
-Go to <span style = 'background-color : red; color : white'> insert local url here </span>. -->
 
 ## How to use the app ?
 Run the app with `python main.py` in a terminal.
@@ -132,5 +127,5 @@ We have integrated our tests into GitLab CI to automate the testing process. The
 You can view the status of our CI pipeline and the detailed logs on the [GitLab UI](https://gitlab-cw4.centralesupelec.fr/sohel.dinnoo/projet-groupe-1/-/pipelines/).
 
 ## Code architecture diagram
-![Code architecure diagram](./doc/code_architecture.png)
+![Code architecture diagram](./doc/code_architecture.png)
 
