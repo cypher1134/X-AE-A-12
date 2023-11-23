@@ -2,6 +2,13 @@ import pandas as pd
 import sqlite3
 from tqdm import tqdm
 import time
+import sys
+import os
+src = os.path.dirname(os.path.realpath(__file__))
+root = os.path.dirname(src)
+sys.path.append(src)# parent directory to the sys.path.
+sys.path.append(root)
+from  Machin_Learning import *
 
 # Initialize global variables
 n = 0
@@ -40,7 +47,8 @@ def db_thread(path, savepath="./data/raw_data.json", force_writing=False):
         training_model = True
         raw_data['date'] = raw_data['date'].apply(twi_time_to_unix)
         raw_data['fake_value'] = update_fake_value(raw_data)  
-        raw_data['confidence'] = update_confidence(raw_data)  
+        raw_data['confidence'] = update_confidence(raw_data)
+        raw_data = predict_on_database(raw_data)
         raw_data.to_json(savepath)
         training_model = False
         print('-----Raw_data registered-----')
@@ -65,6 +73,7 @@ def db_to_dataframe(cursor):
     cursor.execute("SELECT Count(*) FROM tweets")
     
     n= cursor.fetchone()[0]
+    n=1000
     print("n= "+str(n))
     # Fetch tweets from the database
     cursor.execute('SELECT * FROM tweets')

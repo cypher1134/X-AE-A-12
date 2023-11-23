@@ -77,7 +77,7 @@ def dataframe_select_period(df, begin, end):
         tdf = tdf[tdf.date <= int(end) + 86400]
     return tdf
 
-def FAKE_to_binary(FAKE_text):
+def fake_to_binary(fake_text):
     """
     Converts a 'FAKE' or 'true' label to binary (1 or 0).
 
@@ -87,7 +87,7 @@ def FAKE_to_binary(FAKE_text):
     Returns:
     int: binary representation (1 for 'FAKE', 0 for 'true').
     """
-    if FAKE_text == "FAKE":
+    if fake_text == "FAKE":
         return 1
     else:
         return 0
@@ -130,7 +130,7 @@ def like_retweet_view_count_line(df, begin="", end=""):
         px.line(tdf.groupby('date')['view'].sum(), template="darkly")
     )
 
-def FAKE_pie_line(df, begin="", end=""):
+def fake_pie_line(df, begin="", end=""):
     """
     Returns a pie chart and line plot of the binary 'FAKE' label per day within a specified period.
 
@@ -145,16 +145,16 @@ def FAKE_pie_line(df, begin="", end=""):
     tdf = dataframe_select_period(df, begin, end)
     tdf = dataframe_unix_to_day(tdf)
     ldf = tdf.copy()
-    ldf["FAKE_value"] = ldf["FAKE_value"].apply(FAKE_to_binary)
-    FAKE_nb = len(tdf[tdf["FAKE_value"]=="FAKE"])
-    FAKE_perc = pd.DataFrame.from_dict({
-        "FAKE_perc": [FAKE_nb, len(tdf) - FAKE_nb], 
-        "FAKE":['FAKE', 'true']
+    ldf["fake_value"] = ldf["fake_value"].apply(fake_to_binary)
+    fake_nb = len(tdf[tdf["fake_value"]=="FAKE"])
+    fake_perc = pd.DataFrame.from_dict({
+        "fake_perc": [fake_nb, len(tdf) - fake_nb], 
+        "fake":['fake', 'true']
     })
     return (
-        px.pie(FAKE_perc, values='FAKE_perc', names='FAKE', hole=.7, template="darkly", color='FAKE', color_discrete_map={
+        px.pie(fake_perc, values='fake_perc', names='fake', hole=.7, template="darkly", color='fake', color_discrete_map={
            'true':'green',
-           'FAKE':'red'
+           'fake':'red'
         }),
-        px.line(ldf.groupby('date')['FAKE_value'].sum(), template="darkly")
+        px.line(ldf.groupby('date')['fake_value'].sum(), template="darkly")
     )
