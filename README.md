@@ -73,7 +73,7 @@ measures the margin between the correct classification score and the score assig
 ##### The regularization term 
 helps prevent the model from becoming too complex and overfitting to the training data.
 
-![PA algorithm](./doc/PA_Algo.png)
+![PA algorithm](./doc/PA_Algo.jpg)
 
 This classifier is trained on the Tfidf-transformed training data to learn the patterns and characteristics of fake and real news.<br>
 ```python
