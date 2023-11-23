@@ -3,16 +3,13 @@ import pandas as pd
 import sys,os
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import PassiveAggressiveClassifier
-# Getting the name of the directory where this file is present.
 src = os.path.dirname(os.path.realpath(__file__))
-# Getting the parent directory name where the current directory is present.
 root = os.path.dirname(src)
-
-# Adding the parent directory to the sys.path.
 sys.path.append(src)
 sys.path.append(root)
 data_file = os.path.abspath(os.path.join(root, 'data','train.csv'))
-print(data_file)
+
+
 def predict_on_database(df, train_csv_path=data_file):
     """
     Predicts fake news labels and probabilities for articles in a database using a trained model.
@@ -58,9 +55,9 @@ def predict_on_database(df, train_csv_path=data_file):
             df.iloc[i,-2]="REAL"
     
     # Display the count of REAL and FAKE instances
-    real_count = np.sum(y_pred == "REAL")
+    real_count = np.sum(df["fake_value"] == "REAL")
     print("REAL Count =", real_count)
-    fake_count = np.sum(y_pred == "FAKE")
+    fake_count = np.sum(df["fake_value"] == "FAKE")
     print("FAKE Count =", fake_count)
 
     return df

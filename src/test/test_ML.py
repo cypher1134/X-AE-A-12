@@ -3,15 +3,9 @@ import sys
 import os
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
-
-
-# Getting the name of the directory where this file is present.
-current = os.path.dirname(os.path.realpath(__file__))
-# Getting the parent directory name where the current directory is present.
-src = os.path.dirname(current)
+test = os.path.dirname(os.path.realpath(__file__))
+src = os.path.dirname(test)
 root = os.path.dirname(src)
-
-# Adding the parent directory to the sys.path.
 sys.path.append(src)
 sys.path.append(root)
 
@@ -35,7 +29,7 @@ def test_full_data_accuracy():
     accuracy_full_test = accuracy_score(predicted_full_test_df["fake_value"], df_Full_test_COMP["fake_value"])
 
     # Print the accuracy
-    print(f"Accuracy on full test data: {accuracy_full_test*100}")
+    print(f"Accuracy on full test data: {accuracy_full_test*100}%")
 
     # Assert that the accuracy is within an acceptable range (you can customize this)
     assert 0.0 <= accuracy_full_test <= 1.0
@@ -60,7 +54,7 @@ def test_partial_data_accuracy():
     accuracy_partial_test = accuracy_score(predicted_partial_test_df["fake_value"], partial_test_df_COMP["fake_value"])
 
     # Print the accuracy
-    print(f"Accuracy on partial test data: {accuracy_partial_test*100}")
+    print(f"Accuracy on partial test data: {accuracy_partial_test*100}%")
 
     # Assert that the accuracy is within an acceptable range (you can customize this)
     assert 0.0 <= accuracy_partial_test <= 1.0

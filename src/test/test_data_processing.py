@@ -4,8 +4,8 @@ import sqlite3
 import time
 import sys
 import os
-current = os.path.dirname(os.path.realpath(__file__))
-src = os.path.dirname(current)
+test = os.path.dirname(os.path.realpath(__file__))
+src = os.path.dirname(test)
 root = os.path.dirname(src)
 sys.path.append(src)# parent directory to the sys.path.
 sys.path.append(root)
