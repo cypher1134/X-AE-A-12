@@ -122,14 +122,15 @@ if __name__ == "__main__":
                         dcc.Graph(figure={}, id='fake_line'), 
                     ], style={"height": "350px"}, className="g-0"), className="", width = 4),
                 ], style={"maxHeight": "350px"}),
-                dbc.Row([
+                dbc.Col([
                     dbc.CardHeader("Likes function of views"),
-                    dbc.Col(dcc.Graph(figure={}, id='fake_scatter'), className="")
-                ]),
+                    dbc.Row([
+                    dcc.Graph(figure={}, id='fake_scatter'),
+                ], style={"height": "390px"})]),
             ], width=8),
             html.Div(id="reload-div"),
         ])),
-    ], className="g-0", style={'height':'100vh', 'overflow-y': 'show'})], style={'overflow-x': 'hidden', 'overflow-y': 'show'})
+    ], className="g-0", style={'height':'100vh', 'overflow-y': 'hidden'})], style={'overflow-x': 'hidden', 'overflow-y': 'hidden',"position": "fixed"})
 
     @app.callback(
         Output("progressbar_init", "value"),
@@ -181,21 +182,24 @@ if __name__ == "__main__":
             clock_stat = 0
             df_search = dashboard.dataframe_search(data_processing.raw_data, "text", str(search or '', ))
             if date_switch_state:
-                fake_perc_figure, fake_line_figure = dashboard.fake_pie_line(df_search)
-                tweet_count_figure = dashboard.tweet_count_hist(df_search)
-                like_count_figure, retweet_count_figure, view_count_figure  = dashboard.like_retweet_view_count_line(df_search)
-                fake_scatter_figure = dashboard.fake_scatter(df_search)
+                df_time = dashboard.dataframe_unix_to_day(df_search)
+                fake_perc_figure, fake_line_figure = dashboard.fake_pie_line(df_time)
+                tweet_count_figure = dashboard.tweet_count_hist(df_time)
+                like_count_figure, retweet_count_figure, view_count_figure  = dashboard.like_retweet_view_count_line(df_time)
+                fake_scatter_figure = dashboard.fake_scatter(df_time)
             else:
                 unix_begin_date, unix_end_date = date_iso_to_unix(begin_date, end_date)
-                fake_perc_figure, fake_line_figure = dashboard.fake_pie_line(df_search, unix_begin_date, unix_end_date)
-                tweet_count_figure = dashboard.tweet_count_hist(df_search, unix_begin_date, unix_end_date)
-                like_count_figure, retweet_count_figure, view_count_figure = dashboard.like_retweet_view_count_line(df_search, unix_begin_date, unix_end_date)
-                fake_scatter_figure = dashboard.fake_scatter(df_search, unix_begin_date, unix_end_date)
+                df_time = dashboard.dataframe_period_time(df_search, unix_begin_date, unix_end_date)
+                fake_perc_figure, fake_line_figure = dashboard.fake_pie_line(df_time)
+                tweet_count_figure = dashboard.tweet_count_hist(df_time)
+                like_count_figure, retweet_count_figure, view_count_figure = dashboard.like_retweet_view_count_line(df_time)
+                fake_scatter_figure = dashboard.fake_scatter(df_time)
+            fake_scatter_figure.update_layout(margin=dict(l=2, r=2, t=10, b=2), showlegend=False)
             fake_perc_figure.update_layout(margin=dict(l=2, r=2, t=10, b=2))
             fake_line_figure.update_layout(margin=dict(l=2, r=2, t=10, b=2), xaxis_visible=False, xaxis_showticklabels=False, showlegend=False)
             like_count_figure.update_layout(xaxis=dict(showgrid=False),yaxis=dict(showgrid=True),showlegend=False, xaxis_visible=False, xaxis_showticklabels=False, yaxis_title="likes", margin=dict(l=2, r=10, t=2, b=2))
-            view_count_figure.update_layout(xaxis=dict(showgrid=False),yaxis=dict(showgrid=False),showlegend=False, xaxis_visible=False, xaxis_showticklabels=False, yaxis_title="views", margin=dict(l=2, r=10, t=2, b=2))
-            retweet_count_figure.update_layout(xaxis=dict(showgrid=False),yaxis=dict(showgrid=False),showlegend=False, xaxis_visible=False, xaxis_showticklabels=False, yaxis_title="retweets", margin=dict(l=10, r=2, t=2, b=2))
+            view_count_figure.update_layout(xaxis=dict(showgrid=False),yaxis=dict(showgrid=True),showlegend=False, xaxis_visible=False, xaxis_showticklabels=False, yaxis_title="views", margin=dict(l=2, r=10, t=2, b=2))
+            retweet_count_figure.update_layout(xaxis=dict(showgrid=False),yaxis=dict(showgrid=True),showlegend=False, xaxis_visible=False, xaxis_showticklabels=False, yaxis_title="retweets", margin=dict(l=10, r=2, t=2, b=2))
             if search_graph is not None:
                 try:
                     main_node_graph_dict = parcours.select_biggest_connected_graph(data_processing.graph_dict, search_graph)

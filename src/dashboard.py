@@ -92,63 +92,68 @@ def fake_to_binary(fake_text):
     else:
         return 0
 
-def tweet_count_hist(df, begin="", end=""):
+def dataframe_period_time(df, begin="", end=""):
+    """
+    Returns a dataframe with only a selected period, and with the Unix timestamp
+    converted to formated dates
+
+    Parameters:
+    - df: dataframe
+    - begin: start date (Unix timestamp)
+    - end: end date (Unix timestamp)
+
+    Returns:
+    Same dataframe, with timeframe selected and date converted to a human-readable format
+    """
+    tdf = dataframe_select_period(df, begin, end)
+    tdf = dataframe_unix_to_day(tdf)
+    return tdf
+
+def tweet_count_hist(df):
     """
     Returns a histogram of tweet counts per day within a specified period.
 
     Parameters:
     - df: dataframe
-    - begin: start date (Unix timestamp)
-    - end: end date (Unix timestamp)
 
     Returns:
     Plotly express histogram: histogram of tweet counts per day.
     """
-    tdf = dataframe_select_period(df, begin, end)
-    tdf = dataframe_unix_to_day(tdf)
-    tdf = dataframe_count(tdf, 'date')
+    tdf = dataframe_count(df, 'date')
     tdf = pd.DataFrame({'date':tdf.index, 'tweets':tdf.values}).sort_values(by=['date'])
     return px.histogram(tdf, x="date", y="tweets", template="darkly")
 
-def like_retweet_view_count_line(df, begin="", end=""):
+def like_retweet_view_count_line(df):
     """
     Returns line plots of 'like,' 'retweet,' and 'view' counts per day within a specified period.
 
     Parameters:
     - df: dataframe
-    - begin: start date (Unix timestamp)
-    - end: end date (Unix timestamp)
 
     Returns:
     tuple of plotly express line plots: Line plots for 'like,' 'retweet,' and 'view' counts per day.
     """
-    tdf = dataframe_select_period(df, begin, end)
-    tdf = dataframe_unix_to_day(tdf)
     return (
-        px.line(tdf.groupby('date')['like'].sum(), template="darkly"),
-        px.line(tdf.groupby('date')['retweet'].sum(), template="darkly"),
-        px.line(tdf.groupby('date')['view'].sum(), template="darkly")
+        px.line(df.groupby('date')['like'].sum(), template="darkly"),
+        px.line(df.groupby('date')['retweet'].sum(), template="darkly"),
+        px.line(df.groupby('date')['view'].sum(), template="darkly")
     )
 
-def fake_pie_line(df, begin="", end=""):
+def fake_pie_line(df):
     """
     Returns a pie chart and line plot of the binary 'FAKE' label per day within a specified period.
 
     Parameters:
     - df: dataframe
-    - begin: start date (Unix timestamp)
-    - end: end date (Unix timestamp)
 
     Returns:
     tuple of plotly express pie chart and line plot: pie chart and line plot for the binary 'FAKE' label per day.
     """
-    tdf = dataframe_select_period(df, begin, end)
-    tdf = dataframe_unix_to_day(tdf)
-    ldf = tdf.copy()
+    ldf = df.copy()
     ldf["fake_value"] = ldf["fake_value"].apply(fake_to_binary)
-    fake_nb = len(tdf[tdf["fake_value"]=="FAKE"])
+    fake_nb = len(df[df["fake_value"]=="FAKE"])
     fake_perc = pd.DataFrame.from_dict({
-        "fake_perc": [fake_nb, len(tdf) - fake_nb], 
+        "fake_perc": [fake_nb, len(df) - fake_nb], 
         "fake":['fake', 'true']
     })
     return (
@@ -159,7 +164,15 @@ def fake_pie_line(df, begin="", end=""):
         px.line(ldf.groupby('date')['fake_value'].sum(), template="darkly")
     )
 
-def fake_scatter(df, begin="", end=""):
-    tdf = dataframe_select_period(df, begin, end)
-    tdf = dataframe_unix_to_day(tdf)
-    return px.scatter(tdf, x='view', y='like', color=tdf['fake_value'].apply(fake_to_binary).tolist(), template="darkly")
+def fake_scatter(df):
+    """
+    Returns a scatter of likes in function of the number of views per tweet, coloring the dots
+    based on the FAKE value
+
+    Parameters:
+    - df: dataframe
+
+    Returns:
+    scatter of the likes function of the views
+    """
+    return px.scatter(df, x='view', y='like', color=df['fake_value'].apply(fake_to_binary).tolist(), template="darkly")
