@@ -10,8 +10,8 @@ sys.path.append(root)
 import parcours
 import data_processing
 
-tag_file = os.path.abspath(os.path.join(root, 'data','tag_list.txt'))
-graph_file = os.path.abspath(os.path.join(root, 'data','graph_dict.txt'))
+tag_file = os.path.abspath(os.path.join(root, 'data','pytest_data','tag_list.txt'))
+graph_file = os.path.abspath(os.path.join(root, 'data','pytest_data','graph_dict.txt'))
 
 def most_tweet_per_user(df):
     """Get the username of the person who posted the most tweets

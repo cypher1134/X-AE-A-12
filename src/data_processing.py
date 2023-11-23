@@ -17,8 +17,8 @@ init_percent = 0
 raw_data = None
 training_model = False
 graph_dict = {}
-
-def db_thread(path, savepath="./data/raw_data.json", force_writing=False):
+JSON_RAWdata_file = os.path.abspath(os.path.join(root, 'data','raw_data.json'))
+def db_thread(path, savepath=JSON_RAWdata_file, force_writing=False):
     """
     Load or create a JSON file with raw data from a SQLite database.
 
