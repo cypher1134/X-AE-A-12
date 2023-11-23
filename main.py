@@ -201,7 +201,7 @@ if __name__ == "__main__":
                 tweet_count_figure = dashboard.tweet_count_hist(df_time)
                 like_count_figure, retweet_count_figure, view_count_figure = dashboard.like_retweet_view_count_line(df_time)
                 fake_scatter_figure = dashboard.fake_scatter(df_time)
-            fake_scatter_figure.update_layout(margin=dict(l=2, r=2, t=10, b=2))
+            fake_scatter_figure.update_layout(margin=dict(l=2, r=2, t=10, b=2), showlegend=False)
             fake_perc_figure.update_layout(margin=dict(l=2, r=2, t=10, b=2))
             fake_line_figure.update_layout(margin=dict(l=2, r=2, t=10, b=2), xaxis_visible=False, xaxis_showticklabels=False, showlegend=False)
             like_count_figure.update_layout(xaxis=dict(showgrid=False),yaxis=dict(showgrid=True),showlegend=False, xaxis_visible=False, xaxis_showticklabels=False, yaxis_title="likes", margin=dict(l=2, r=10, t=2, b=2))
