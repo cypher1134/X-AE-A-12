@@ -112,21 +112,22 @@ if __name__ == "__main__":
             dbc.Col([
                 dbc.Row([
                     dbc.Col([
-                        dbc.CardHeader("Interactions stats"),
+                        dbc.CardHeader("Interaction stats"),
                         dbc.Row(dcc.Graph(figure={}, id='view'), style={"height": "130px"}),
                         dbc.Row(dcc.Graph(figure={}, id='retweet'), style={"height": "130px"}),
                         dbc.Row(dcc.Graph(figure={}, id='like'), style={"height": "130px"}),
                     ], className="", style={"maxHeight": "350px", "overflow": "scroll", 'max-width': '100%', 'overflow-x': 'hidden'}, width = 8),
                     dbc.Col(dbc.Row([
-                        dbc.CardHeader("Fakes news per day"),
+                        dbc.CardHeader("Fake news per day"),
                         dcc.Graph(figure={}, id='fake_line'), 
                     ], style={"height": "350px"}, className="g-0"), className="", width = 4),
                 ], style={"maxHeight": "350px"}),
-                # dbc.Row([
-                #     dbc.Col(dcc.Graph(figure={}, id='fakelnewsss'), className="g-0"),
-                #     dbc.Col(dcc.Graph(figure={}, id='fakenews'), className="g-0"),
-                # ]),
+                dbc.Row([
+                    dbc.CardHeader("Likes function of views"),
+                    dbc.Col(dcc.Graph(figure={}, id='fake_scatter'), className="")
+                ]),
             ], width=8),
+            html.Div(id="reload-div"),
         ])),
     ], className="g-0", style={'height':'100vh', 'overflow-y': 'show'})], style={'overflow-x': 'hidden', 'overflow-y': 'show'})
 
@@ -145,6 +146,8 @@ if __name__ == "__main__":
         Output('fake_line', 'figure'),
         Output("date-picker-range", "disabled"),
         Output("cytoscape_quotes", "elements"),
+        Output("reload-div", "children"),
+        Output("fake_scatter", "figure"),
         Input("clock", "n_intervals"),
         Input('search', 'value'),
         Input('search_graph', 'value'),
@@ -168,10 +171,12 @@ if __name__ == "__main__":
         tuple: progress bar values, figures, and control settings.
         """
         date_switch_state = bool(len(date_switch))
+        reload_div = None
         if data_processing.init_percent >= 100 and data_processing.training_model == False:
             global refresh_page
             if refresh_page:
                 refresh_page = False
+                reload_div = html.Meta(httpEquiv="refresh", content="1")
             collapse_bar = False
             clock_stat = 0
             df_search = dashboard.dataframe_search(data_processing.raw_data, "text", str(search or '', ))
@@ -179,11 +184,13 @@ if __name__ == "__main__":
                 fake_perc_figure, fake_line_figure = dashboard.fake_pie_line(df_search)
                 tweet_count_figure = dashboard.tweet_count_hist(df_search)
                 like_count_figure, retweet_count_figure, view_count_figure  = dashboard.like_retweet_view_count_line(df_search)
+                fake_scatter_figure = dashboard.fake_scatter(df_search)
             else:
                 unix_begin_date, unix_end_date = date_iso_to_unix(begin_date, end_date)
                 fake_perc_figure, fake_line_figure = dashboard.fake_pie_line(df_search, unix_begin_date, unix_end_date)
                 tweet_count_figure = dashboard.tweet_count_hist(df_search, unix_begin_date, unix_end_date)
                 like_count_figure, retweet_count_figure, view_count_figure = dashboard.like_retweet_view_count_line(df_search, unix_begin_date, unix_end_date)
+                fake_scatter_figure = dashboard.fake_scatter(df_search, unix_begin_date, unix_end_date)
             fake_perc_figure.update_layout(margin=dict(l=2, r=2, t=10, b=2))
             fake_line_figure.update_layout(margin=dict(l=2, r=2, t=10, b=2), xaxis_visible=False, xaxis_showticklabels=False, showlegend=False)
             like_count_figure.update_layout(xaxis=dict(showgrid=False),yaxis=dict(showgrid=True),showlegend=False, xaxis_visible=False, xaxis_showticklabels=False, yaxis_title="likes", margin=dict(l=2, r=10, t=2, b=2))
@@ -204,6 +211,7 @@ if __name__ == "__main__":
             fake_perc_figure, fake_line_figure = None, None
             tweet_count_figure = None
             like_count_figure, retweet_count_figure, view_count_figure = None, None, None
+            fake_scatter_figure = None
             cyto_elements = []
         return (
             data_processing.init_percent, 
@@ -219,7 +227,9 @@ if __name__ == "__main__":
             fake_perc_figure,
             fake_line_figure,
             date_switch_state,
-            cyto_elements
+            cyto_elements,
+            reload_div,
+            fake_scatter_figure
         )
 
     @app.callback(
