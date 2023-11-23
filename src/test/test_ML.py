@@ -17,7 +17,7 @@ sys.path.append(root)
 
 import Machin_Learning as ML
 
-train_data_file = os.path.abspath(os.path.join(root, 'data','LIAR', 'train.csv'))
+train_data_file = os.path.abspath(os.path.join(root, 'data','train.csv'))
 partial_train = os.path.abspath(os.path.join(root, 'data', 'partial_train.csv'))
 partial_test = os.path.abspath(os.path.join(root, 'data', 'partial_test.csv'))
 
@@ -39,7 +39,7 @@ def test_full_data_accuracy():
 
     # Assert that the accuracy is within an acceptable range (you can customize this)
     assert 0.0 <= accuracy_full_test <= 1.0
-    
+
 test_full_data_accuracy()
 # def test_partial_data_accuracy():
 #     # Load the full training dataset

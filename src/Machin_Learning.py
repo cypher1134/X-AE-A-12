@@ -1,9 +1,19 @@
 import numpy as np
 import pandas as pd
+import sys,os
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import PassiveAggressiveClassifier
+# Getting the name of the directory where this file is present.
+current = os.path.dirname(os.path.realpath(__file__))
+# Getting the parent directory name where the current directory is present.
+src = os.path.dirname(current)
+root = os.path.dirname(src)
 
-def predict_on_database(df, train_csv_path="../data/train.csv"):
+# Adding the parent directory to the sys.path.
+sys.path.append(src)
+sys.path.append(root)
+data_file = os.path.abspath(os.path.join(root, 'data','train.csv'))
+def predict_on_database(df, train_csv_path=data_file):
     """
     Predicts fake news labels and probabilities for articles in a database using a trained model.
 
@@ -19,7 +29,6 @@ def predict_on_database(df, train_csv_path="../data/train.csv"):
 
     # Use the entire training dataset
     x_train = train_df["text"]
-
     # Initialize a TfidfVectorizer
     tfidf_vectorizer = TfidfVectorizer(stop_words="english", max_df=0.8)
 
@@ -41,7 +50,7 @@ def predict_on_database(df, train_csv_path="../data/train.csv"):
 
     # Update the database with predictions and probabilities
     df["fake_value"] = y_pred
-    df["confidence"] = pd.to_numeric(df["confidence"])
+    df["confidence"] = probabilities
     
     # Set "fake" value to True for rows where confidence is smaller than 0.2
     for i, conf in enumerate(df["confidence"]):
