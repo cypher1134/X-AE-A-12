@@ -20,6 +20,7 @@ def db_thread(path, savepath="./data/raw_data.json", force_writing=False):
     """
     global raw_data
     global init_percent
+    global training_model
 
     # Try to load raw_data from JSON file if not force_writing
     if not force_writing:
