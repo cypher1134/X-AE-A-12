@@ -4,10 +4,10 @@ import sqlite3
 import time
 import sys
 import os
-current = os.path.dirname(os.path.realpath(__file__))
-src = os.path.dirname(current)
+test = os.path.dirname(os.path.realpath(__file__))
+src = os.path.dirname(test)
 root = os.path.dirname(src)
-sys.path.append(src)# parent directory to the sys.path.
+sys.path.append(src)
 sys.path.append(root)
 from  data_processing import * 
 
@@ -20,7 +20,6 @@ class MockSQLiteCursor:
         pass
 
     def fetchone(self):
-        # Simulate the behavior of fetchone based on your needs
         return self.query_results
 
     def set_query_results(self, results):
@@ -33,15 +32,12 @@ def test_db_to_dataframe():
     connection = sqlite3.connect(db_path)
     cursor = connection.cursor()
 
-    # Fetch the actual number of rows in the table
     cursor.execute("SELECT COUNT(*) FROM tweets") 
     actual_num_rows = cursor.fetchone()[0]
 
-    # Execute a SELECT query to fetch data
     cursor.execute("SELECT * FROM tweets")  
     query_results = cursor.fetchall()
 
-    # Ensure the function returns a DataFrame
     result = db_to_dataframe(cursor)
 
     # Check if the result is a DataFrame
@@ -54,11 +50,9 @@ def test_db_to_dataframe():
     # Check if the DataFrame has the expected number of rows
     assert len(result) == actual_num_rows
 
-    # Close the connection
     connection.close()
 
 def test_twi_time_to_unix():
-    # Test with a known Twitter timestamp
     time_str = "2023-01-01 12:00:00+00:00"
     result =  twi_time_to_unix(time_str)
     assert result != None

@@ -8,8 +8,12 @@ import plotly.express as px
 import time
 from datetime import date, datetime
 from threading import Thread
+import sys,os
+root = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(root)
 import parcours
 import graph
+
 
 def date_iso_to_unix(begin_date, end_date):
     """
@@ -228,8 +232,9 @@ if __name__ == "__main__":
             return False
         elif at == "tab-2":
             return True
-    
-    thread = Thread(target=data_processing.db_thread, args=("./data/scrap.db",))
+        
+    scrap_data_file = os.path.abspath(os.path.join(root, 'data','scrap.db'))
+    thread = Thread(target=data_processing.db_thread, args=(scrap_data_file,))
     thread.start()
     
     app.run(debug = True)
