@@ -158,3 +158,8 @@ def fake_pie_line(df, begin="", end=""):
         }),
         px.line(ldf.groupby('date')['fake_value'].sum(), template="darkly")
     )
+
+def fake_scatter(df, begin="", end=""):
+    tdf = dataframe_select_period(df, begin, end)
+    tdf = dataframe_unix_to_day(tdf)
+    return px.scatter(tdf, x='view', y='like', color=tdf['fake_value'].apply(fake_to_binary).tolist(), template="darkly")
