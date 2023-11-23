@@ -100,7 +100,7 @@ This ML implementation provides a robust and effective way to classify news arti
 
 ### Machine Learning Model Validation
 
-In our quest to validate the effectiveness of our machine learning model for fake news detection, we employed the [LIAR LIAR PANTS ON FIRE](https://arxiv.org/abs/1705.00648) database by[Professor William Yang Wang](https://scholar.google.com/citations?user=gf8Ms_8AAAAJ&hl=en) as a crucial reference point. The [LIAR database](https://www.cs.ucsb.edu/~william/data/liar_dataset.zip) is a well-known dataset specifically designed for fact-checking and assessing the veracity of statements. 
+In our quest to validate the effectiveness of our machine learning model for fake news detection, we employed the [LIAR LIAR PANTS ON FIRE](https://arxiv.org/abs/1705.00648) database by [Professor William Yang Wang](https://scholar.google.com/citations?user=gf8Ms_8AAAAJ&hl=en) as a crucial reference point. The [LIAR database](https://www.cs.ucsb.edu/~william/data/liar_dataset.zip) is a well-known dataset specifically designed for fact-checking and assessing the veracity of statements. 
 
 Leveraging this rich source of information, we meticulously curated a comprehensive training and testing set for our model. The primary objective was to ensure that our machine learning model exhibited a robust performance in distinguishing between truthful and deceptive statements. 
 
