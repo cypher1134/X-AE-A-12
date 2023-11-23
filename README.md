@@ -62,11 +62,12 @@ tfidf_train = tfidf_vectorizer.fit_transform(x_train)
 ```
 We utilize an Online PassiveAggressiveClassifier, a popular algorithm for online learning scenarios is a dynamic algorithm that adapts well to changing data distributions, making it suitable for scenarios where continuous learning from streaming data is required. 
 
-#### Objective Function:
+### Objective Function:
 The primary objective of the Online PA algorithm is to minimize the loss function, which is defined as a combination of a hinge loss term and a regularization term.
 #### Loss Function:
-The hinge loss measures the margin between the correct classification score and the score assigned to the incorrect class. It encourages the model to correctly classify instances with a margin.
-The regularization term helps prevent the model from becoming too complex and overfitting to the training data.
+
+##### The hinge loss measures the margin between the correct classification score and the score assigned to the incorrect class. It encourages the model to correctly classify instances with a margin.
+##### The regularization term helps prevent the model from becoming too complex and overfitting to the training data.
 
 This classifier is trained on the Tfidf-transformed training data to learn the patterns and characteristics of fake and real news.<br>
 ```python
