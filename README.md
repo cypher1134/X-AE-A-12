@@ -76,7 +76,7 @@ measures the margin between the correct classification score and the score assig
 ##### The regularization term 
 helps prevent the model from becoming too complex and overfitting to the training data.
 
-![PA algorithm](./doc/PA_Algo.png)
+![PA algorithm](./doc/PA_Algo.jpg)
 
 This classifier is trained on the Tfidf-transformed training data to learn the patterns and characteristics of fake and real news.<br>
 ```python
@@ -85,7 +85,7 @@ pac = PassiveAggressiveClassifier(max_iter=500)
 pac.fit(tfidf_train, y_train)
 ```
 
-Once the model is trained, it is used to predict labels and decision function scores on the dataset to be evaluated. The TfidfVectorizer is also applied to transform the text in the dataset into a suitable format for prediction.<br>
+Once the model is trained, it is used to predict labels and decision function scores on the dataset to be evaluated.<br>
 ```python
 # Predict on the dataset
 x_test = df["text"]
