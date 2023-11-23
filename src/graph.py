@@ -93,7 +93,7 @@ def dash_graph(graph_dict):
     div = html.Div([
         cyto.Cytoscape(
             id='cytoscape_quotes',
-            elements=elements,
+            elements=[],
             style={'width': '100%', 'height': '600px', 'backgroundColor': '#91A3B0'},
             layout={
                 'name': 'cose'

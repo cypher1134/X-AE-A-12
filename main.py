@@ -2,6 +2,7 @@ from src import dashboard, data_processing
 import pandas as pd
 import sqlite3
 from dash import Dash, html, dash_table, dcc, callback, Output, Input
+import dash_cytoscape as cyto
 import dash_bootstrap_components as dbc
 from dash_bootstrap_templates import load_figure_template
 import plotly.express as px
@@ -37,6 +38,8 @@ def date_iso_to_unix(begin_date, end_date):
     return unix_begin_date, unix_end_date
 
 if __name__ == "__main__":
+    refresh_page = True
+
     load_figure_template("darkly")
     dbc_css = "https://cdn.jsdelivr.net/gh/AnnMarieW/dash-bootstrap-templates/dbc.min.css"
     app = Dash(__name__, external_stylesheets=[dbc.themes.DARKLY, dbc_css])
@@ -48,7 +51,7 @@ if __name__ == "__main__":
                 dbc.InputGroupText("Search"), 
                 dbc.Input(id="search_graph", type="text", placeholder="Select username", debounce=True)
             ], className="mb-3"),
-            cyto.Cytoscape(id='cytoscape_quotes', elements=elements, style={'width': '100%', 'height': '600px', 'backgroundColor': '#91A3B0'}, layout={'name': 'cose'}, stylesheet=[
+            cyto.Cytoscape(id='cytoscape_quotes', elements=[], style={'width': '100%', 'height': '600px', 'backgroundColor': '#91A3B0'}, layout={'name': 'cose'}, stylesheet=[
                 {
                     'selector': 'node',
                     'style': {
@@ -79,11 +82,12 @@ if __name__ == "__main__":
                     }
                 },
             ]),
-        ])),
+        ]), id="collapse_node", is_open=False),
         dcc.Interval(id='clock', interval=1000, n_intervals=0, max_intervals=-1),
         dbc.Tabs([
             dbc.Tab(label="Graphs", tab_id="tab-1"),
             dbc.Tab(label="Search", tab_id="tab-2"),
+            dbc.Tab(label="Nodes", tab_id="tab-3"),
         ], id="tabs", active_tab="tab-1"),
         dbc.Collapse([dbc.Row([
             dbc.Alert("Search and adjust your parameters", color="secondary"),
@@ -165,6 +169,9 @@ if __name__ == "__main__":
         """
         date_switch_state = bool(len(date_switch))
         if data_processing.init_percent >= 100 and data_processing.training_model == False:
+            global refresh_page
+            if refresh_page:
+                refresh_page = False
             collapse_bar = False
             clock_stat = 0
             df_search = dashboard.dataframe_search(data_processing.raw_data, "text", str(search or '', ))
@@ -216,6 +223,7 @@ if __name__ == "__main__":
 
     @app.callback(
         Output("collapse_search", "is_open"),
+        Output("collapse_node", "is_open"),
         Input("tabs", "active_tab"),
     )
     def switch_tab(at):
@@ -229,9 +237,11 @@ if __name__ == "__main__":
         bool: search tab visibility state.
         """
         if at == "tab-1":
-            return False
+            return False, False
         elif at == "tab-2":
-            return True
+            return True, False
+        elif at == "tab-3":
+            return False, True
         
     scrap_data_file = os.path.abspath(os.path.join(root, 'data','scrap.db'))
     thread = Thread(target=data_processing.db_thread, args=(scrap_data_file,))

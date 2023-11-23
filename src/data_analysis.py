@@ -198,8 +198,12 @@ def username_to_fake_value(df,username):
         row_number=df_tweet.shape[0]
         fake_value_list=[]
         for i in range(row_number):
-                fake_value=df_tweet.iloc[i,fake_value_column_id]
-                fake_value_list.append(fake_value)
+            fake_value=df_tweet.iloc[i,fake_value_column_id]
+            if fake_value == "FAKE":
+                fake_value = 1
+            else:
+                fake_value = 0
+            fake_value_list.append(fake_value)
         return np.mean(fake_value_list)
     else :
         return 0.0
