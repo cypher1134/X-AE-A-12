@@ -8,7 +8,5 @@ dash_cytoscape
 plotly
 pandas
 scikit-learn
-pysqlite3
 tqdm
 pytest
-cyto
