@@ -116,7 +116,7 @@ To run the tests, you can use the following command:
 ```bash
 pytest pytest ./src/test/test_file.py
 ```
-##GitLab CI Pipeline
+### GitLab CI Pipeline
 We have integrated our tests into GitLab CI to automate the testing process. The CI pipeline ensures that our tests are run automatically whenever changes are pushed to the repository. This helps maintain code quality and catch potential issues early in the development process.
 
 You can view the status of our CI pipeline and the detailed logs on the [GitLab UI](https://gitlab-cw4.centralesupelec.fr/sohel.dinnoo/projet-groupe-1/-/pipelines/).
