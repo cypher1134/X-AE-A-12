@@ -1,6 +1,7 @@
 stages:
   - test ML
   - test data_processing
+  - test parcour
 pytest ML:
   stage: test ML
   script:
