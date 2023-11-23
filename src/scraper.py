@@ -19,7 +19,7 @@ async def main():
     """
     Asynchronous function to scrape tweets using the twscrape library.
 
-    Scrapes tweets related to "bill gates" in English from November 1, 2023, to November 18, 2023,
+    Scrapes tweets related to "Xname" in Langueg: lg from dat1, to dat2,
     and stores them in a SQLite database.
 
     Parameters:
@@ -28,9 +28,13 @@ async def main():
     Returns:
     None
     """
+    Xname="bill gates"
+    lg="en"
+    date1="2023-11-01"
+    date2="2023-11-"
     api = API()
     for i in range(18,0,-1):
-        q = "bill gates lang:en since:2023-11-01 until:2023-11-{}".format(i)
+        q = "{Xname} lang:{lg} since:{date1} until:{date2}{}".format(i)
         async for tweet in api.search(q, limit=500):
             print(tweet.id, tweet.user.username)
             try:
