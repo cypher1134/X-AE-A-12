@@ -45,7 +45,7 @@ def predict_on_database(df, train_csv_path="../data/train.csv"):
     
     # Set "fake" value to True for rows where confidence is smaller than 0.2
     for i, conf in enumerate(df["confidence"]):
-        if pd.to_numeric(conf) < 0.2 and  df.iloc[i,-2]=="FAKE":
+        if pd.to_numeric(conf) < 0.4 and  df.iloc[i,-2]=="FAKE":
             df.iloc[i,-2]="REAL"
     
     # Display the count of REAL and FAKE instances
