@@ -7,6 +7,7 @@ import time
 n = 0
 init_percent = 0
 raw_data = None
+training_model = False
 
 def db_thread(path, savepath="./data/raw_data.json", force_writing=False):
     """
@@ -35,10 +36,12 @@ def db_thread(path, savepath="./data/raw_data.json", force_writing=False):
         db_conn = sqlite3.connect(path)
         db_cursor = db_conn.cursor()
         raw_data = db_to_dataframe(db_cursor)
+        training_model = True
         raw_data['date'] = raw_data['date'].apply(twi_time_to_unix)
         raw_data['fake_value'] = update_fake_value(raw_data)  
         raw_data['confidence'] = update_confidence(raw_data)  
         raw_data.to_json(savepath)
+        training_model = False
         print('-----Raw_data registered-----')
 
     init_percent = 100
