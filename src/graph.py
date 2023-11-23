@@ -93,7 +93,7 @@ def dash_graph(graph_dict):
     div = html.Div([
         cyto.Cytoscape(
             id='cytoscape_quotes',
-            elements=[],
+            elements=elements,
             style={'width': '100%', 'height': '600px', 'backgroundColor': '#91A3B0'},
             layout={
                 'name': 'cose'
@@ -135,10 +135,10 @@ def dash_graph(graph_dict):
 
 
 if __name__ == '__main__':
-    dico_test = {'user1': (54, [('user2', 3), ('user3', 51)]),
-                 'user2': (6, [('user1', 6)]),
-                 'user3': (0, []),
-                 'user4': (35, [('user3', 35)])}
+    dico_test = {'user1': (54, [('user2', 3), ('user3', 51)],0.3),
+                 'user2': (6, [('user1', 6)],0.5),
+                 'user3': (0, [],0.0),
+                 'user4': (35, [('user3', 35)],0.2)}
     app = Dash(__name__)
     app.layout = dash_graph(dico_test)
     app.run(debug=True)

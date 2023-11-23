@@ -42,17 +42,22 @@ if __name__ == "__main__":
     refresh_page = True
 
     load_figure_template("darkly")
-    dbc_css = "https://cdn.jsdelivr.net/gh/AnnMarieW/dash-bootstrap-templates/dbc.min.css"
-    app = Dash(__name__, external_stylesheets=[dbc.themes.DARKLY, dbc_css])
+    app = Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
 
     app.layout = html.Div([dbc.Card([
         dbc.Collapse(dbc.Progress(value=50, id="progressbar_init", striped=False, animated=True), id="collapse_bar", is_open=False),
+        dcc.Interval(id='clock', interval=1000, n_intervals=0, max_intervals=-1),
+        dbc.Tabs([
+            dbc.Tab(label="Graphs", tab_id="tab-1"),
+            dbc.Tab(label="Search", tab_id="tab-2"),
+            dbc.Tab(label="Nodes", tab_id="tab-3"),
+        ], id="tabs", active_tab="tab-1"),
         dbc.Collapse(dbc.Row([
             dbc.InputGroup([
                 dbc.InputGroupText("Search"), 
                 dbc.Input(id="search_graph", type="text", placeholder="Select username", debounce=True)
             ], className="mb-3"),
-            cyto.Cytoscape(id='cytoscape_quotes', elements=[], style={'width': '100%', 'height': '600px', 'backgroundColor': '#91A3B0'}, layout={'name': 'cose'}, stylesheet=[
+            cyto.Cytoscape(id='cytoscape_quotes', elements=[], style={'width': '100%', 'height': '600px', 'backgroundColor': '#303030'}, layout={'name': 'cose'}, stylesheet=[
                 {
                     'selector': 'node',
                     'style': {
@@ -83,13 +88,7 @@ if __name__ == "__main__":
                     }
                 },
             ]),
-        ]), id="collapse_node", is_open=False),
-        dcc.Interval(id='clock', interval=1000, n_intervals=0, max_intervals=-1),
-        dbc.Tabs([
-            dbc.Tab(label="Graphs", tab_id="tab-1"),
-            dbc.Tab(label="Search", tab_id="tab-2"),
-            dbc.Tab(label="Nodes", tab_id="tab-3"),
-        ], id="tabs", active_tab="tab-1"),
+        ]), id="collapse_node", is_open=True),
         dbc.Collapse([dbc.Row([
             dbc.Alert("Search and adjust your parameters", color="secondary"),
             dbc.Col([
@@ -129,7 +128,7 @@ if __name__ == "__main__":
                 # ]),
             ], width=8),
         ])),
-    ], className="g-0", style={'height':'100vh'})], style={'max-width': '100%', 'overflow-x': 'hidden', 'overflow-y': 'hidden'})
+    ], className="g-0", style={'height':'100vh', 'overflow-y': 'show'})], style={'overflow-x': 'hidden', 'overflow-y': 'show'})
 
     @app.callback(
         Output("progressbar_init", "value"),
@@ -192,9 +191,10 @@ if __name__ == "__main__":
             retweet_count_figure.update_layout(xaxis=dict(showgrid=False),yaxis=dict(showgrid=False),showlegend=False, xaxis_visible=False, xaxis_showticklabels=False, yaxis_title="retweets", margin=dict(l=10, r=2, t=2, b=2))
             if search_graph is not None:
                 try:
-                    parcours.select_biggest_connected_graph(graph_dict, search_graph)
+                    main_node_graph_dict = parcours.select_biggest_connected_graph(data_processing.graph_dict, search_graph)
                     cyto_elements = graph.graph_from_dict(main_node_graph_dict)
-                except:
+                except Exception as e:
+                    print(e)
                     cyto_elements = []
             else:
                 cyto_elements = []
