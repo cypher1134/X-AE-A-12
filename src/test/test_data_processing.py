@@ -26,6 +26,12 @@ class MockSQLiteCursor:
         self.query_results = results
 
 def test_db_to_dataframe():
+    """
+    Test the db_to_dataframe function.
+    - Connects to a SQLite database and retrieves query results.
+    - Converts the query results to a DataFrame using the db_to_dataframe function.
+    - Checks if the result is a DataFrame with the expected columns and rows.
+    """
     db_path =  os.path.abspath(os.path.join(root, 'data', "scrap.db"))#Absolute path to the database file for the gitlab CI
 
     # Connect to the SQLite database
@@ -53,12 +59,22 @@ def test_db_to_dataframe():
     connection.close()
 
 def test_twi_time_to_unix():
+    """
+    Test the twi_time_to_unix function.
+    - Calls the function with a sample Twitter timestamp.
+    - Checks if the result is not None.
+    """
     time_str = "2023-01-01 12:00:00+00:00"
     result =  twi_time_to_unix(time_str)
     assert result != None
 
 
 def test_update_fake_value():
+    """
+    Test the update_fake_value function.
+    - Creates a mock DataFrame.
+    - Calls the function and checks if the result is a list of the same length as the input DataFrame.
+    """
     # Mock DataFrame
     data = pd.DataFrame({'id': [1, 2, 3], 'user': ['user1', 'user2', 'user3'], 'text': ['text1', 'text2', 'text3']})
 
@@ -67,6 +83,11 @@ def test_update_fake_value():
     assert len(result) == len(data)
 
 def test_update_confidence():
+    """
+    Test the update_confidence function.
+    - Creates a mock DataFrame.
+    - Calls the function and checks if the result is a list of the same length as the input DataFrame.
+    """
     # Mock DataFrame
     data = pd.DataFrame({'id': [1, 2, 3], 'user': ['user1', 'user2', 'user3'], 'text': ['text1', 'text2', 'text3']})
 

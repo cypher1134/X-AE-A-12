@@ -18,6 +18,9 @@ partial_test = os.path.abspath(os.path.join(root, 'data', 'partial_test.csv'))
 
 
 def test_full_data_accuracy():
+    """
+    Test the accuracy of the 'predict_on_database' function on the full test dataset.
+    """
     # Load the full training dataset
     df_Full_test = pd.read_csv(train_data_file)
     df_Full_test_COMP = df_Full_test.copy()
@@ -35,6 +38,9 @@ def test_full_data_accuracy():
     assert 0.0 <= accuracy_full_test <= 1.0
 
 def test_partial_data_accuracy():
+    """
+    Test the accuracy of the 'predict_on_database' function on the partial test dataset.
+    """
     # Load the full training dataset
     df_Full_test = pd.read_csv(train_data_file)
 
