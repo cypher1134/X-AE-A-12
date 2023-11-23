@@ -11,6 +11,8 @@ from threading import Thread
 import sys,os
 root = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(root)
+import parcours
+import graph
 
 
 def date_iso_to_unix(begin_date, end_date):
@@ -41,6 +43,43 @@ if __name__ == "__main__":
 
     app.layout = html.Div([dbc.Card([
         dbc.Collapse(dbc.Progress(value=50, id="progressbar_init", striped=False, animated=True), id="collapse_bar", is_open=False),
+        dbc.Collapse(dbc.Row([
+            dbc.InputGroup([
+                dbc.InputGroupText("Search"), 
+                dbc.Input(id="search_graph", type="text", placeholder="Select username", debounce=True)
+            ], className="mb-3"),
+            cyto.Cytoscape(id='cytoscape_quotes', elements=elements, style={'width': '100%', 'height': '600px', 'backgroundColor': '#91A3B0'}, layout={'name': 'cose'}, stylesheet=[
+                {
+                    'selector': 'node',
+                    'style': {
+                        "width": "data(size)",
+                        "height": "data(size)",
+                        "content": "data(label)",
+                        "font-size": "data(font_size)",
+                        "text-valign": "center",
+                        "text-halign": "center",
+                        "background-color": "data(fake_color)"
+                    }
+                },
+                {
+                    'selector': 'edge',
+                    'style': {
+                        'curve-style': 'bezier',
+                        'target-arrow-shape': 'vee',
+                        'target-arrow-color': 'data(color)',
+                        'line-color': 'data(color)',
+
+                    },
+
+                },
+                {
+                    'selector': '[number_links <= 10]',
+                    'style': {
+                        "content": "",
+                    }
+                },
+            ]),
+        ])),
         dcc.Interval(id='clock', interval=1000, n_intervals=0, max_intervals=-1),
         dbc.Tabs([
             dbc.Tab(label="Graphs", tab_id="tab-1"),
@@ -101,19 +140,22 @@ if __name__ == "__main__":
         Output('fake_perc', 'figure'),
         Output('fake_line', 'figure'),
         Output("date-picker-range", "disabled"),
+        Output("cytoscape_quotes", "elements"),
         Input("clock", "n_intervals"),
         Input('search', 'value'),
+        Input('search_graph', 'value'),
         Input('date-picker-range', 'start_date'),
         Input('date-picker-range', 'end_date'),
         Input("date-switch", "value"),
     )
-    def progress_bar_update(n, search, begin_date, end_date, date_switch):
+    def progress_bar_update(n, search, search_graph, begin_date, end_date, date_switch):
         """
         Updates the progress bar and generates figures based on user input.
 
         Parameters:
         - n: int, interval count.
         - search: str, search string.
+        - search_graph: str, search string for the graph.
         - begin_date: str, start date.
         - end_date: str, end date.
         - date_switch: list, switch state for all period.
@@ -140,12 +182,21 @@ if __name__ == "__main__":
             like_count_figure.update_layout(xaxis=dict(showgrid=False),yaxis=dict(showgrid=True),showlegend=False, xaxis_visible=False, xaxis_showticklabels=False, yaxis_title="likes", margin=dict(l=2, r=10, t=2, b=2))
             view_count_figure.update_layout(xaxis=dict(showgrid=False),yaxis=dict(showgrid=False),showlegend=False, xaxis_visible=False, xaxis_showticklabels=False, yaxis_title="views", margin=dict(l=2, r=10, t=2, b=2))
             retweet_count_figure.update_layout(xaxis=dict(showgrid=False),yaxis=dict(showgrid=False),showlegend=False, xaxis_visible=False, xaxis_showticklabels=False, yaxis_title="retweets", margin=dict(l=10, r=2, t=2, b=2))
+            if search_graph is not None:
+                try:
+                    parcours.select_biggest_connected_graph(graph_dict, search_graph)
+                    cyto_elements = graph.graph_from_dict(main_node_graph_dict)
+                except:
+                    cyto_elements = []
+            else:
+                cyto_elements = []
         else :
             collapse_bar = True
             clock_stat = -1
             fake_perc_figure, fake_line_figure = None, None
             tweet_count_figure = None
             like_count_figure, retweet_count_figure, view_count_figure = None, None, None
+            cyto_elements = []
         return (
             data_processing.init_percent, 
             str(data_processing.init_percent) + ' %',
@@ -159,7 +210,8 @@ if __name__ == "__main__":
             view_count_figure, 
             fake_perc_figure,
             fake_line_figure,
-            date_switch_state
+            date_switch_state,
+            cyto_elements
         )
 
     @app.callback(

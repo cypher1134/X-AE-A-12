@@ -8,13 +8,15 @@ src = os.path.dirname(os.path.realpath(__file__))
 root = os.path.dirname(src)
 sys.path.append(src)
 sys.path.append(root)
-from  Machin_Learning import *
+from  Machin_Learning import predict_on_database
+import data_analysis
 
 # Initialize global variables
 n = 0
 init_percent = 0
 raw_data = None
 training_model = False
+graph_dict = {}
 
 def db_thread(path, savepath="./data/raw_data.json", force_writing=False):
     """
@@ -28,12 +30,13 @@ def db_thread(path, savepath="./data/raw_data.json", force_writing=False):
     global raw_data
     global init_percent
     global training_model
+    global graph_dict
 
     # Try to load raw_data from JSON file if not force_writing
     if not force_writing:
         try:
             raw_data = pd.read_json(savepath, convert_dates=False)
-            print(raw_data)
+            graph_dict = data_analysis.graph_dict_generate(raw_data)
             print('-----Finished loading raw_data-----')
         except Exception as e:
             print(e)
@@ -50,6 +53,7 @@ def db_thread(path, savepath="./data/raw_data.json", force_writing=False):
         raw_data['confidence'] = update_confidence(raw_data)
         raw_data = predict_on_database(raw_data)
         raw_data.to_json(savepath)
+        graph_dict = data_analysis.graph_dict_generate(raw_data, True)
         training_model = False
         print('-----Raw_data registered-----')
 
