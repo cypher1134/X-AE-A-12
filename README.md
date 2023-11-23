@@ -35,6 +35,7 @@ Clone the `git` repository on your computer with `git clone https`.
 
 Install all needed packages by running `pip install -r requirements.txt`.
 
+(Don't worry, the first loading can be quite long because it has to create the database, the next should be faster.)
 
 ## How to use the app ?
 Run the app with `python main.py` in a terminal.
@@ -63,7 +64,21 @@ tfidf_vectorizer = TfidfVectorizer(stop_words="english", max_df=0.8)
 # Fit and transform the training set
 tfidf_train = tfidf_vectorizer.fit_transform(x_train)
 ```
-We utilize a PassiveAggressiveClassifier, a popular algorithm for online learning scenarios. This classifier is trained on the Tfidf-transformed training data to learn the patterns and characteristics of fake and real news.<br>
+We utilize an Online PassiveAggressiveClassifier, a popular algorithm for online learning scenarios is a dynamic algorithm that adapts well to changing data distributions, making it suitable for scenarios where continuous learning from streaming data is required. 
+
+### Objective Function:
+The primary objective of the Online PA algorithm is to minimize the loss function, which is defined as a combination of a hinge loss term and a regularization term.
+#### Loss Function:
+
+##### hinge loss term 
+measures the margin between the correct classification score and the score assigned to the incorrect class. It encourages the model to correctly classify instances with a margin.
+
+##### The regularization term 
+helps prevent the model from becoming too complex and overfitting to the training data.
+
+![PA algorithm](./doc/PA_Algo.png)
+
+This classifier is trained on the Tfidf-transformed training data to learn the patterns and characteristics of fake and real news.<br>
 ```python
 # Initialize a PassiveAggressiveClassifier
 pac = PassiveAggressiveClassifier(max_iter=500)
@@ -103,7 +118,7 @@ This ML implementation provides a robust and effective way to classify news arti
 
 ### Machine Learning Model Validation
 
-In our quest to validate the effectiveness of our machine learning model for fake news detection, we employed the [LIAR LIAR PANTS ON FIRE](https://arxiv.org/abs/1705.00648) database by[Professor William Yang Wang](https://scholar.google.com/citations?user=gf8Ms_8AAAAJ&hl=en) as a crucial reference point. The [LIAR database](https://www.cs.ucsb.edu/~william/data/liar_dataset.zip) is a well-known dataset specifically designed for fact-checking and assessing the veracity of statements. 
+In our quest to validate the effectiveness of our machine learning model for fake news detection, we employed the [LIAR LIAR PANTS ON FIRE](https://arxiv.org/abs/1705.00648) database by [Professor William Yang Wang](https://scholar.google.com/citations?user=gf8Ms_8AAAAJ&hl=en) as a crucial reference point. The [LIAR database](https://www.cs.ucsb.edu/~william/data/liar_dataset.zip) is a well-known dataset specifically designed for fact-checking and assessing the veracity of statements. 
 
 Leveraging this rich source of information, we meticulously curated a comprehensive training and testing set for our model. The primary objective was to ensure that our machine learning model exhibited a robust performance in distinguishing between truthful and deceptive statements. 
 
@@ -128,6 +143,10 @@ pytest pytest ./src/test/test_file.py
 We have integrated our tests into GitLab CI to automate the testing process. The CI pipeline ensures that our tests are run automatically whenever changes are pushed to the repository. This helps maintain code quality and catch potential issues early in the development process.
 
 You can view the status of our CI pipeline and the detailed logs on the [GitLab UI](https://gitlab-cw4.centralesupelec.fr/sohel.dinnoo/projet-groupe-1/-/pipelines/).
+
+## Project slides
+
+Slides can be found into the `./doc` directory. It is a `.pdf` file.
 
 ## Code architecture diagram
 ![Code architecture diagram](./doc/code_architecture.png)
