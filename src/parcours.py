@@ -1,4 +1,10 @@
 import pandas as pd
+import sys,os
+src = os.path.dirname(os.path.realpath(__file__))
+root = os.path.dirname(src)
+sys.path.append(src)
+sys.path.append(root)
+
 
 def select_biggest_connected_graph(dico_tag,main_node):
     

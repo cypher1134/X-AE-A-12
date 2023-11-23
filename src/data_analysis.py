@@ -2,8 +2,16 @@ import pandas as pd
 from tqdm import tqdm
 import json
 import numpy as np
-import data
-from src import parcours
+import sys,os
+src = os.path.dirname(os.path.realpath(__file__))
+root = os.path.dirname(src)
+sys.path.append(src)
+sys.path.append(root)
+import parcours
+import data_processing
+
+tag_file = os.path.abspath(os.path.join(root, 'data','tag_list.txt'))
+graph_file = os.path.abspath(os.path.join(root, 'data','graph_dict.txt'))
 
 def most_tweet_per_user(df):
     """Get the username of the person who posted the most tweets
@@ -15,8 +23,7 @@ def most_tweet_per_user(df):
         str : Username of the most activ tweeter
     """
     return df.groupby(['user'])['id'].count().sort_values(ascending=False).idxmax()
-###test tweet_per_user
-#print(most_tweet_per_user(df))
+
 
 def get_all_tag(df,force_writing=False):
     """Go through the text of all tweets and look for tags ('@'+'username') in it
@@ -32,7 +39,7 @@ def get_all_tag(df,force_writing=False):
     """
     # Load the tag_list which is regitered in the json file
     try:
-        with open('./data/tag_list.txt',"r") as fp:
+        with open(tag_file,"r") as fp:
             tag_list = json.load(fp)
     except Exception as e:
         print(e)
@@ -51,7 +58,7 @@ def get_all_tag(df,force_writing=False):
                 if word.startswith('@') and len(word)>=2:
                     tag_list.append((word[1:],df.iloc[i,index_column_username]))
         try :
-            with open('./data/tag_list.txt',"w") as fp:
+            with open(tag_file,"w") as fp:
                 json.dump(tag_list,fp)
                 print('-----Tag_list is registered-----')
         except Exception as e:
@@ -59,8 +66,7 @@ def get_all_tag(df,force_writing=False):
         
     return tag_list
 
-###test get_all_tag
-#print(get_all_tag(df))
+
 
 
 
@@ -78,7 +84,6 @@ def tag_count(df,tag:str,force_writing=False):
     assert not tag.startswith('@'),(f'{tag} begins with a @')
     tag_list=get_all_tag(df,force_writing)
     return tag_list.count(tag)
-#print('realDonaldTrump',tag_count(df,'@HollyEgg',False))
 
 
 
@@ -116,7 +121,7 @@ def graph_dict_generate(df,force_writing=False):
     
     if not force_writing:
         try :
-            with open('./data/graph_dict.txt',"r") as fp:
+            with open(graph_file,"r") as fp:
                 graph_dict=json.load(fp)
         except Exception as e :
             print(e)
@@ -133,7 +138,7 @@ def graph_dict_generate(df,force_writing=False):
                     graph_dict[tager_username]=(0,[],username_to_fake_value(df,tager_username))
         print('-----Finished creating graph dictionnary-----')
         try :
-            with open('./data/graph_dict.txt',"w") as fp:
+            with open(graph_file,"w") as fp:
                 json.dump(graph_dict,fp)
                 print('-----Graph_dict is registered-----')
         except :

@@ -1,5 +1,11 @@
 from collections import defaultdict
-from src import parcours
+import sys,os
+test = os.path.dirname(os.path.realpath(__file__))
+src = os.path.dirname(test)
+root = os.path.dirname(src)
+sys.path.append(src)
+sys.path.append(root)
+import parcours
 import pytest
 
 

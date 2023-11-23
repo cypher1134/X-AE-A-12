@@ -1,8 +1,6 @@
 """
 Module about creating the graph with dash           
 """
-
-
 from tqdm import tqdm
 import pandas as pd
 from dash import Dash, html
