@@ -8,7 +8,7 @@ root = os.path.dirname(src)
 sys.path.append(src)
 sys.path.append(root)
 data_file = os.path.abspath(os.path.join(root, 'data','train.csv'))
-
+MIN_PROB=0.4
 
 def predict_on_database(df, train_csv_path=data_file):
     """
@@ -18,6 +18,7 @@ def predict_on_database(df, train_csv_path=data_file):
     - df (pd.DataFrame): DataFrame containing the articles to predict.
     - train_csv_path (str): Path to the CSV file containing the training dataset.
     """
+    global MIN_PROB
     train_df = pd.read_csv(train_csv_path)
     y_train = train_df.fake_value
     x_train = train_df["text"]
@@ -33,7 +34,7 @@ def predict_on_database(df, train_csv_path=data_file):
     df["fake_value"] = y_pred
     df["confidence"] = probabilities
     for i, conf in enumerate(df["confidence"]):
-        if conf < 0.3 and  df.iloc[i,-2]=="FAKE":
+        if conf < MIN_PROB and  df.iloc[i,-2]=="FAKE":
             df.iloc[i,-2]="REAL"
     
     real_count = np.sum(df["fake_value"] == "REAL")

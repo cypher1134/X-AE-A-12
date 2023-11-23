@@ -60,7 +60,7 @@ tfidf_vectorizer = TfidfVectorizer(stop_words="english", max_df=0.8)
 # Fit and transform the training set
 tfidf_train = tfidf_vectorizer.fit_transform(x_train)
 ```
-We utilize a PassiveAggressiveClassifier, a popular algorithm for online learning scenarios. This classifier is trained on the Tfidf-transformed training data to learn the patterns and characteristics of fake and real news.<br>
+We utilize an Online PassiveAggressiveClassifier, a popular algorithm for online learning scenarios. This classifier is trained on the Tfidf-transformed training data to learn the patterns and characteristics of fake and real news.<br>
 ```python
 # Initialize a PassiveAggressiveClassifier
 pac = PassiveAggressiveClassifier(max_iter=500)
