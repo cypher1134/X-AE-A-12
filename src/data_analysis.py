@@ -6,19 +6,40 @@ import data
 from src import parcours
 
 def most_tweet_per_user(df):
+    """Get the username of the person who posted the most tweets
+
+    Args:
+        df (pandas.Dataframe): Dataframe of all tweets
+
+    Returns:
+        str : Username of the most activ tweeter
+    """
     return df.groupby(['user'])['id'].count().sort_values(ascending=False).idxmax()
 ###test tweet_per_user
 #print(most_tweet_per_user(df))
 
 def get_all_tag(df,force_writing=False):
-    '''renvoie une liste de tuple'''
+    """Go through the text of all tweets and look for tags ('@'+'username') in it
+    
+    Args:
+        df (pandas.Dataframe): Dataframe which contains all tweets from scrap.db
+        force_writing (bool, optional): Force the writing in the json file to update the data in it.
+                                        Defaults to False.
+
+    Returns:
+        tag_list(list of list) : Describe all the link between users with that format 
+                                (username of the person taged, username of the person who tags)
+    """
+    # Load the tag_list which is regitered in the json file
     try:
         with open('./data/tag_list.txt',"r") as fp:
-            tag_list=json.load(fp)
+            tag_list = json.load(fp)
     except Exception as e:
         print(e)
         tag_list=None
-    if force_writing or tag_list==None:#si on veut réécrire la liste des tags ou si la liste est vide
+        
+    # Create and write the tag_list in the json file if needed
+    if force_writing or tag_list==None:
         row_number=df.shape[0]
         tag_list=[]
         index_column_username=1
@@ -28,14 +49,14 @@ def get_all_tag(df,force_writing=False):
             word_list=tweet_text.split(' ')
             for word in word_list:
                 if word.startswith('@') and len(word)>=2:
-                    tag_list.append((word[1:],df.iloc[i,index_column_username]))#(le nom du tag, le nom de l'utilisateur qui a posté le tweet)
-        #---stockage : écriture de la liste de tuple pour éviter de la calculer à chaque fois---
+                    tag_list.append((word[1:],df.iloc[i,index_column_username]))
         try :
             with open('./data/tag_list.txt',"w") as fp:
                 json.dump(tag_list,fp)
                 print('-----Tag_list is registered-----')
         except Exception as e:
             print(e)
+        
     return tag_list
 
 ###test get_all_tag
@@ -44,12 +65,35 @@ def get_all_tag(df,force_writing=False):
 
 
 def tag_count(df,tag:str,force_writing=False):
-    assert tag.startswith('@'),(f'{tag} is not a tag')
+    """Return the number of time a person 
+
+    Args:
+        df (pandas.Dataframe): Dataframe of all tweets
+        tag (str): username of the person tagged
+        force_writing (bool, optional): _description_. Defaults to False.
+
+    Returns:
+        int : Count of tags
+    """
+    assert not tag.startswith('@'),(f'{tag} begins with a @')
     tag_list=get_all_tag(df,force_writing)
-    return tag_list.count(tag[1:])
-#print('@HollyEgg',tag_count(df,'@HollyEgg'))
+    return tag_list.count(tag)
+#print('realDonaldTrump',tag_count(df,'@HollyEgg',False))
+
+
 
 def tag_count_dict ( df , force_writing = False ) :
+    """From tag_list, create a dictionary that for each username 
+    describes the link with the persons who taged they
+
+    Args:
+        df (pandas.Dataframe): Dataframe of all tweets
+        force_writing (bool, optional): Ask to recreate the json file to update them.
+        Defaults to False.
+
+    Returns:
+        tag_dict (dictionary):   Example: {'user1':[6 <number_of_tweet_that_taged_user1>,<list_of_person_who_taged_user1>['user2','user2','user1']] }
+    """
     tag_list=get_all_tag(df,force_writing)
     print('-----Finished to get all tags-----')
     tag_dict={}
