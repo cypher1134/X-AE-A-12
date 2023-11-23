@@ -9,11 +9,14 @@ sys.path.append(src)
 sys.path.append(root)
 import data_analysis
 
+
+JSON_RAW_data_file=os.path.abspath(os.path.join(root, 'data','raw_data.json'))
+
 class TestClass:
     
     
     def setup_method(self): 
-        self.df= pd.read_json("./data/raw_data.json", convert_dates=False)
+        self.df= pd.read_json(JSON_RAW_data_file, convert_dates=False)
         self.df=self.df.head(10)
         
     def test_list_description(self):
