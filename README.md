@@ -2,7 +2,7 @@
 
 
 
-## Contributors [Group 1]
+## Contributors
 
 - [Sohel Dinoo](https://gitlab-cw4.centralesupelec.fr/sohel.dinnoo)
 - [Alexandre Baux](https://gitlab-cw4.centralesupelec.fr/alexandre.baux)
@@ -29,6 +29,20 @@
     <li>Companies or more widely known organizations should be able to follow the digital opinion about them (premium account).</li>
     <li> As seen higher, we could monetize our services through a subscription service to access better options (such as Twitter Blue). Free accounts will be able to have access to a limited number of requests using tweets published only recently (a week-widthspan) Premium accounts will be able to have access to unlimited requests over tweets over a longer period. </li>
 </ul>
+
+## Installation instructions
+Clone the `git` repository on your computer with `git clone`.
+
+Install all needed packages by running `pip install -r requirements.txt`.
+
+<!-- Download the dataset on : <span style = 'background-color : red; color : white'> insert url here </span>.
+
+Move the `.csv` file into the folder `./data`.
+
+Go to <span style = 'background-color : red; color : white'> insert local url here </span>. -->
+
+## How to use the app ?
+Run the app with `python main.py` in a terminal.
 
 ## Machine Learning Implementation
 Our machine learning (ML) implementation focuses on predicting fake news labels and estimating probabilities for articles in a given dataset using a trained model. The key steps involve data preprocessing, model training, prediction, and updating the dataset with predictions and probabilities. <br>
@@ -87,19 +101,7 @@ print("FAKE Count =", fake_count)
 ```
 This ML implementation provides a robust and effective way to classify news articles as fake or real based on the patterns learned during training. The update mechanism ensures that the dataset reflects the model's predictions and enables further analysis and actions based on these predictions.
 
-## Installation instructions
-Clone the `git` repository on your computer with `git clone`.
 
-Install all needed packages by running `pip install -r requirements.txt`.
-
-<!-- Download the dataset on : <span style = 'background-color : red; color : white'> insert url here </span>.
-
-Move the `.csv` file into the folder `./data`.
-
-Go to <span style = 'background-color : red; color : white'> insert local url here </span>. -->
-
-## How to use the app ?
-Run the app with `python main.py` in a terminal.
 
 ## Code architecture diagram
 ![Code architecure diagram](./doc/code_architecture.png)
