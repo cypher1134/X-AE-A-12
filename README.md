@@ -101,13 +101,13 @@ print("FAKE Count =", fake_count)
 ```
 This ML implementation provides a robust and effective way to classify news articles as fake or real based on the patterns learned during training. The update mechanism ensures that the dataset reflects the model's predictions and enables further analysis and actions based on these predictions.
 
-### ML Model Validation
+### Machine Learning Model Validation
 
 In our quest to validate the effectiveness of our machine learning model for fake news detection, we employed the [LIAR LIAR PANTS ON FIRE](https://arxiv.org/abs/1705.00648) database by[Professor William Yang Wang](https://scholar.google.com/citations?user=gf8Ms_8AAAAJ&hl=en) as a crucial reference point. The [LIAR database](https://www.cs.ucsb.edu/~william/data/liar_dataset.zip) is a well-known dataset specifically designed for fact-checking and assessing the veracity of statements. 
 
 Leveraging this rich source of information, we meticulously curated a comprehensive training and testing set for our model. The primary objective was to ensure that our machine learning model exhibited a robust performance in distinguishing between truthful and deceptive statements. 
 
-To rigorously evaluate the model's accuracy, we implemented a dedicated testing script named test_ML.py using the pytest framework. Allowing us to measure its accuracy and ascertain that it surpassed the 50% threshold.
+To rigorously evaluate the model's accuracy, we implemented a dedicated testing script named [test_ML.py](https://gitlab-cw4.centralesupelec.fr/sohel.dinnoo/projet-groupe-1#tests) using the pytest framework. Allowing us to measure its accuracy and ascertain that it surpassed the 50% threshold.
 
 
 ## Tests
