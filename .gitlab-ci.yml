@@ -19,7 +19,7 @@ pytest data_processing:
     - pip3 install pytest  # Install pytest
     - pytest ./src/test/test_data_processing.py  
   
-  pytest data_processing:
+  pytest parcours:
   stage: test parcours
   script:
     - apt-get update -qy  # Update package index
