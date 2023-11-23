@@ -41,6 +41,9 @@ Run the app with `python main.py` in a terminal.
 
 Then open the link that shows in the terminal and enjoy.
 
+To rebuild the internal data (if scrap.db is changed for example), add the argument `--force-reload`.
+Please note that this process is long and ressource intensive.
+
 ## Machine Learning Implementation
 Our machine learning (ML) implementation focuses on predicting fake news labels and estimating probabilities for articles in a given dataset using a trained model. The key steps involve data preprocessing, model training, prediction, and updating the dataset with predictions and probabilities. <br>
 The first step is loading the training dataset, which includes labeled examples of fake and real news. The labels are extracted, and the textual content is used as the input feature. We employ a TfidfVectorizer, initialized with specific parameters such as stop words and maximum document frequency, to convert the text into a numerical representation suitable for machine learning.<br>

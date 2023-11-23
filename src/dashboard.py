@@ -175,4 +175,4 @@ def fake_scatter(df):
     Returns:
     scatter of the likes function of the views
     """
-    return px.scatter(df, x='view', y='like', color=df['fake_value'].apply(fake_to_binary).tolist(), template="darkly")
+    return px.scatter(df, x='view', y='like', color=df['fake_value'].tolist(), template="darkly", log_x=True, log_y=True, color_discrete_sequence=['#EF553B', '#636EFA'])
