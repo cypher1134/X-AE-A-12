@@ -1,5 +1,7 @@
 from src import dashboard, data_processing
 import pandas as pd
+import dash_cytoscape as cyto
+
 import sqlite3
 from dash import Dash, html, dash_table, dcc, callback, Output, Input
 import dash_cytoscape as cyto
