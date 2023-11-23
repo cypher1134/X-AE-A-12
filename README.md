@@ -43,6 +43,7 @@ Go to <span style = 'background-color : red; color : white'> insert local url he
 
 ## How to use the app ?
 Run the app with `python main.py` in a terminal.
+
 The open the link that shows in the terminal
 
 ## Machine Learning Implementation
