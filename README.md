@@ -35,6 +35,7 @@ Clone the `git` repository on your computer with `git clone https`.
 
 Install all needed packages by running `pip install -r requirements.txt`.
 
+(Don't worry, the first loading can be quite long because it has to create the database, the next should be faster.)
 
 ## How to use the app ?
 Run the app with `python main.py` in a terminal.
@@ -139,6 +140,10 @@ pytest pytest ./src/test/test_file.py
 We have integrated our tests into GitLab CI to automate the testing process. The CI pipeline ensures that our tests are run automatically whenever changes are pushed to the repository. This helps maintain code quality and catch potential issues early in the development process.
 
 You can view the status of our CI pipeline and the detailed logs on the [GitLab UI](https://gitlab-cw4.centralesupelec.fr/sohel.dinnoo/projet-groupe-1/-/pipelines/).
+
+## Project slides
+
+Slides can be found into the `./doc` directory. It is a `.pdf` file.
 
 ## Code architecture diagram
 ![Code architecture diagram](./doc/code_architecture.png)
