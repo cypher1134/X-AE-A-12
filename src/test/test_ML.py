@@ -35,7 +35,7 @@ def test_full_data_accuracy():
     print(f"Accuracy on full test data: {accuracy_full_test*100}%")
 
     # Assert that the accuracy is within an acceptable range 
-    assert 0.0 <= accuracy_full_test <= 1.0
+    assert 0.5 <= accuracy_full_test <= 1.0
 
 def test_partial_data_accuracy():
     """
@@ -62,4 +62,4 @@ def test_partial_data_accuracy():
     print(f"Accuracy on partial test data: {accuracy_partial_test*100}%")
 
     # Assert that the accuracy is within an acceptable range 
-    assert 0.0 <= accuracy_partial_test <= 1.0
+    assert 0.4 <= accuracy_partial_test <= 1.0
