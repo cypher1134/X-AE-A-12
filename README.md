@@ -31,7 +31,7 @@
 </ul>
 
 ## Installation instructions
-Clone the `git` repository on your computer with `git clone`.
+Clone the `git` repository on your computer with `git clone https`.
 
 Install all needed packages by running `pip install -r requirements.txt`.
 
@@ -102,8 +102,25 @@ print("FAKE Count =", fake_count)
 This ML implementation provides a robust and effective way to classify news articles as fake or real based on the patterns learned during training. The update mechanism ensures that the dataset reflects the model's predictions and enables further analysis and actions based on these predictions.
 
 
+## Tests
+
+We have written Pytest files to thoroughly test our functions. The following Pytest files are available in the `src/test` directory:
+
+- `test_data_analysis.py`: Tests for functions related to data analysis.
+- `test_data_processing.py`: Tests for functions related to data processing.
+- `test_ML.py`: Tests for machine learning functions.
+- `test_parcours.py`: Tests for parcours-related functions.
+
+To run the tests, you can use the following command:
+
+```bash
+pytest pytest ./src/test/test_file.py
+```
+###GitLab CI Pipeline
+We have integrated our tests into GitLab CI to automate the testing process. The CI pipeline ensures that our tests are run automatically whenever changes are pushed to the repository. This helps maintain code quality and catch potential issues early in the development process.
+
+You can view the status of our CI pipeline and the detailed logs on the [GitLab UI](https://gitlab-cw4.centralesupelec.fr/sohel.dinnoo/projet-groupe-1/-/pipelines/56).
 
 ## Code architecture diagram
 ![Code architecure diagram](./doc/code_architecture.png)
 
- 

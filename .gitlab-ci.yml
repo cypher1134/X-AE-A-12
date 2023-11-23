@@ -37,4 +37,4 @@ pytest data_analysis:
     - apt-get install -y python3-pip  # Install pip for Python 3
     - pip3 install -r requirements.txt  # Install dependencies
     - pip3 install pytest  # Install pytest
-    - pytest ./src/test/data_analysis.py 
+    - pytest ./src/test/test_data_analysis.py 
