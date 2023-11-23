@@ -27,7 +27,7 @@
 <ul style='text-align : justify'> 
     <li> A unique user will be able to access some (limited) information about a chosen subject (free account). </li>
     <li>Companies or more widely known organizations should be able to follow the digital opinion about them (premium account).</li>
-    <li> As seen higher, we could monetize our services through a subscription service to access better options (such as Twitter Blue). Free accounts will be able to have access to a limited number of requests using tweets published only recently (a week-widthspan) Premium accounts will be able to have access to unlimited requests over tweets over a longer period. <li>
+    <li> As seen higher, we could monetize our services through a subscription service to access better options (such as Twitter Blue). Free accounts will be able to have access to a limited number of requests using tweets published only recently (a week-widthspan) Premium accounts will be able to have access to unlimited requests over tweets over a longer period. </li>
 </ul>
 
 ## Machine Learning Implementation
