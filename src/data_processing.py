@@ -6,7 +6,7 @@ import sys
 import os
 src = os.path.dirname(os.path.realpath(__file__))
 root = os.path.dirname(src)
-sys.path.append(src)# parent directory to the sys.path.
+sys.path.append(src)
 sys.path.append(root)
 from  Machin_Learning import *
 
@@ -69,13 +69,11 @@ def db_to_dataframe(cursor):
     data = pd.DataFrame(columns=['id', 'user', 'text', 'view', 'like', 'retweet', 'date'])
     aide = None
 
-    # Get the total number of tweets
     cursor.execute("SELECT Count(*) FROM tweets")
     
     n= cursor.fetchone()[0]
     n=1000
     print("n= "+str(n))
-    # Fetch tweets from the database
     cursor.execute('SELECT * FROM tweets')
     global init_percent
     for i in range(n):
@@ -109,8 +107,6 @@ def update_fake_value(data):
     Returns:
     - list: List of fake values.
     """
-    # Add your logic here to update the 'fake_value' column
-    # For now, setting it to 'FAKE' for all rows as an example
     return ['FAKE'] * len(data)
     
 def update_confidence(data):
@@ -123,6 +119,5 @@ def update_confidence(data):
     Returns:
     - list: List of confidence values.
     """
-    # Add your logic here to update the 'confidence' column
-    # For now, setting it to 0 for all rows as an example
+
     return [0.0] * len(data)

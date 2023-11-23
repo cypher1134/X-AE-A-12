@@ -31,7 +31,7 @@ def test_full_data_accuracy():
     # Print the accuracy
     print(f"Accuracy on full test data: {accuracy_full_test*100}%")
 
-    # Assert that the accuracy is within an acceptable range (you can customize this)
+    # Assert that the accuracy is within an acceptable range 
     assert 0.0 <= accuracy_full_test <= 1.0
 
 def test_partial_data_accuracy():
@@ -43,7 +43,6 @@ def test_partial_data_accuracy():
     partial_test_df_COMP = partial_test_df.copy()
  
 
-    # Save the smaller training and test datasets to new files
     partial_train_df.to_csv(partial_train, index=False)
     partial_test_df.to_csv(partial_test, index=False)
 
@@ -56,5 +55,5 @@ def test_partial_data_accuracy():
     # Print the accuracy
     print(f"Accuracy on partial test data: {accuracy_partial_test*100}%")
 
-    # Assert that the accuracy is within an acceptable range (you can customize this)
+    # Assert that the accuracy is within an acceptable range 
     assert 0.0 <= accuracy_partial_test <= 1.0
