@@ -4,16 +4,11 @@ import sqlite3
 import time
 import sys
 import os
-# Getting the name of the directory where this file is present.
 current = os.path.dirname(os.path.realpath(__file__))
-# Getting the parent directory name where the current directory is present.
 src = os.path.dirname(current)
 root = os.path.dirname(src)
-
-# Adding the parent directory to the sys.path.
-sys.path.append(src)
+sys.path.append(src)# parent directory to the sys.path.
 sys.path.append(root)
-
 from  data_processing import * 
 
 # Mocking the sqlite3 connect method
@@ -22,7 +17,6 @@ class MockSQLiteCursor:
         self.query_results = None
 
     def execute(self, query):
-        # You can add logic here to handle different queries if needed
         pass
 
     def fetchone(self):
@@ -33,8 +27,7 @@ class MockSQLiteCursor:
         self.query_results = results
 
 def test_db_to_dataframe():
-    # Construct the absolute path to the database file for the gitlab CI
-    db_path =  os.path.abspath(os.path.join(root, 'data', "scrap.db"))
+    db_path =  os.path.abspath(os.path.join(root, 'data', "scrap.db"))#Absolute path to the database file for the gitlab CI
 
     # Connect to the SQLite database
     connection = sqlite3.connect(db_path)

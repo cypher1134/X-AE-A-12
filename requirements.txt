@@ -7,5 +7,6 @@ dash-bootstrap-templates
 plotly
 pandas
 scikit-learn
+pysqlite3
 tqdm
 pytest

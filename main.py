@@ -69,16 +69,19 @@ if __name__ == "__main__":
                         dbc.Row(dcc.Graph(figure={}, id='view'), style={"height": "130px"}),
                         dbc.Row(dcc.Graph(figure={}, id='retweet'), style={"height": "130px"}),
                         dbc.Row(dcc.Graph(figure={}, id='like'), style={"height": "130px"}),
-                    ], className="g-0", style={"maxHeight": "350px", "overflow": "scroll", 'max-width': '100%', 'overflow-x': 'hidden'}, width = 8),
-                    dbc.Col(dcc.Graph(figure={}, id='fake_line'), className="g-0", width = 4),
+                    ], className="", style={"maxHeight": "350px", "overflow": "scroll", 'max-width': '100%', 'overflow-x': 'hidden'}, width = 8),
+                    dbc.Col(dbc.Row([
+                        dbc.CardHeader("Fakes news per day"),
+                        dcc.Graph(figure={}, id='fake_line'), 
+                    ], style={"height": "350px"}, className="g-0"), className="", width = 4),
                 ], style={"maxHeight": "350px"}),
-                dbc.Row([
-                    dbc.Col(dcc.Graph(figure={}, id='fakelnewsss'), className="g-0"),
-                    dbc.Col(dcc.Graph(figure={}, id='fakenews'), className="g-0"),
-                ]),
+                # dbc.Row([
+                #     dbc.Col(dcc.Graph(figure={}, id='fakelnewsss'), className="g-0"),
+                #     dbc.Col(dcc.Graph(figure={}, id='fakenews'), className="g-0"),
+                # ]),
             ], width=8),
         ])),
-    ], className="g-0", style={'height':'100vh'})], style={'max-width': '100%', 'overflow-x': 'hidden'})
+    ], className="g-0", style={'height':'100vh'})], style={'max-width': '100%', 'overflow-x': 'hidden', 'overflow-y': 'hidden'})
 
     @app.callback(
         Output("progressbar_init", "value"),
@@ -129,6 +132,7 @@ if __name__ == "__main__":
                 tweet_count_figure = dashboard.tweet_count_hist(df_search, unix_begin_date, unix_end_date)
                 like_count_figure, retweet_count_figure, view_count_figure = dashboard.like_retweet_view_count_line(df_search, unix_begin_date, unix_end_date)
             fake_perc_figure.update_layout(margin=dict(l=2, r=2, t=10, b=2))
+            fake_line_figure.update_layout(margin=dict(l=2, r=2, t=10, b=2), xaxis_visible=False, xaxis_showticklabels=False, showlegend=False)
             like_count_figure.update_layout(xaxis=dict(showgrid=False),yaxis=dict(showgrid=True),showlegend=False, xaxis_visible=False, xaxis_showticklabels=False, yaxis_title="likes", margin=dict(l=2, r=10, t=2, b=2))
             view_count_figure.update_layout(xaxis=dict(showgrid=False),yaxis=dict(showgrid=False),showlegend=False, xaxis_visible=False, xaxis_showticklabels=False, yaxis_title="views", margin=dict(l=2, r=10, t=2, b=2))
             retweet_count_figure.update_layout(xaxis=dict(showgrid=False),yaxis=dict(showgrid=False),showlegend=False, xaxis_visible=False, xaxis_showticklabels=False, yaxis_title="retweets", margin=dict(l=10, r=2, t=2, b=2))

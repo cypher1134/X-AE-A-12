@@ -41,7 +41,6 @@ def predict_on_database(df, train_csv_path="../data/train.csv"):
 
     # Update the database with predictions and probabilities
     df["fake_value"] = y_pred
-    df["confidence"] = probabilities # Use the probability for the "FAKE" class
     df["confidence"] = pd.to_numeric(df["confidence"])
     
     # Set "fake" value to True for rows where confidence is smaller than 0.2
@@ -57,6 +56,3 @@ def predict_on_database(df, train_csv_path="../data/train.csv"):
 
     return df
 
-# Example usage
-# df_to_predict = ...  # Provide the DataFrame you want to predict on
-# predicted_df = predict_on_database(df_to_predict)
