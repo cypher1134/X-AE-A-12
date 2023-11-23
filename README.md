@@ -35,14 +35,13 @@ Clone the `git` repository on your computer with `git clone https`.
 
 Install all needed packages by running `pip install -r requirements.txt`.
 
-(Don't worry, the first loading can be quite long because it has to create the database, the next should be faster.)
-
 ## How to use the app ?
 Run the app with `python main.py` in a terminal.
 
 Then open the link that shows in the terminal and enjoy.
 
 To rebuild the internal data (if scrap.db is changed for example), add the argument `--force-reload`.
+
 Please note that this process is long and ressource intensive.
 
 ## Machine Learning Implementation
