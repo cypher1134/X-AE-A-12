@@ -82,7 +82,7 @@ pac = PassiveAggressiveClassifier(max_iter=500)
 pac.fit(tfidf_train, y_train)
 ```
 
-Once the model is trained, it is used to predict labels and decision function scores on the dataset to be evaluated. The TfidfVectorizer is also applied to transform the text in the dataset into a suitable format for prediction.<br>
+Once the model is trained, it is used to predict labels and decision function scores on the dataset to be evaluated.<br>
 ```python
 # Predict on the dataset
 x_test = df["text"]
