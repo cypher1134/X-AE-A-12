@@ -3,7 +3,7 @@ import sys
 import os
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
-import Machin_Learning as ML
+
 
 # Getting the name of the directory where this file is present.
 current = os.path.dirname(os.path.realpath(__file__))
@@ -15,7 +15,7 @@ root = os.path.dirname(src)
 sys.path.append(src)
 sys.path.append(root)
 
-# Now import the module
+import Machin_Learning as ML
 
 train_data_file = os.path.abspath(os.path.join(root, 'data', 'train.csv'))
 partial_train = os.path.abspath(os.path.join(root, 'data', 'partial_train.csv'))
@@ -47,6 +47,7 @@ def test_partial_data_accuracy():
     # Split the training dataset into train and test sets
     partial_train_df, partial_test_df = train_test_split(df_Full_test, test_size=0.8)
     partial_test_df_COMP = partial_test_df.copy()
+ 
 
     # Save the smaller training and test datasets to new files
     partial_train_df.to_csv(partial_train, index=False)
