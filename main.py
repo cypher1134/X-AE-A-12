@@ -60,7 +60,7 @@ if __name__ == "__main__":
                     "colors goes from yellow to red and represent the number of time the user quoted someone"
                 ),
                 html.P("Please note that this graph may be slow to load"),
-            ], color="secondary", style={"margin-top": "15px", "margin-left": "30px", "margin-right": "30px"}),
+            ], color="secondary"),
             dbc.InputGroup([
                 dbc.InputGroupText("Search"), 
                 dbc.Input(id="search_graph", type="text", placeholder="Select username", debounce=True)
@@ -96,7 +96,7 @@ if __name__ == "__main__":
                     }
                 },
             ]),
-        ]), id="collapse_node", is_open=True),
+        ]), id="collapse_node", is_open=True, style={"margin-top": "15px", "margin-left": "30px", "margin-right": "30px"}),
         dbc.Collapse([dbc.Row([
             dbc.Alert("Search and adjust your parameters", color="secondary"),
             dbc.Col([
