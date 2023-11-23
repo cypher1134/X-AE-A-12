@@ -44,7 +44,7 @@ Go to <span style = 'background-color : red; color : white'> insert local url he
 ## How to use the app ?
 Run the app with `python main.py` in a terminal.
 
-The open the link that shows in the terminal
+The open the link that shows in the terminal and enjoy.
 
 ## Machine Learning Implementation
 Our machine learning (ML) implementation focuses on predicting fake news labels and estimating probabilities for articles in a given dataset using a trained model. The key steps involve data preprocessing, model training, prediction, and updating the dataset with predictions and probabilities. <br>
