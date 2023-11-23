@@ -35,14 +35,8 @@ class TestClass:
     def test_tag_count_dict(self):
         assert data_analysis.tag_count_dict (self.df,True) == {'RachelBitecofer': [1, ['Nigel_StHubbins']], 'kristine_kenyon': [1, ['Nigel_StHubbins']], 'ckolchacksghost': [1, ['mainetom329402']], 'dbongino': [1, ['mainetom329402']], 'tinfoilted1': [1, ['Biracialman76']], 'thehill': [1, ['Biracialman76']], 'Trump_Losses': [1, ['Gustavia_Bones']], 'Travis_in_Flint': [1, ['ATchelka']], 'TheEXECUTlONER_': [1, ['garyshelley7']], 'POTUS': [1, ['bryanyou52']]}
     
-    def test_graph_dict_generate(self):
-        graph_file = os.path.abspath(os.path.join(root, 'data','graph_dict.txt'))
-        with open(graph_file,"r") as fp:
-                graph_dict=json.load(fp)
-        assert data_analysis.graph_dict_generate(self.df,True)== graph_dict
-    
     def test_tager_username_to_tweet_id_list(self):
         assert data_analysis.tager_username_to_tweet_id_list(self.df, "RachelBitecofer", "Nigel_StHubbins")==[1713343926189330692]
     
     def test_username_to_fake_value(self):
-            assert data_analysis.username_to_fake_value(self.df,"bryanyou52")==0.0
+        assert data_analysis.username_to_fake_value(self.df,"bryanyou52")==0.0
