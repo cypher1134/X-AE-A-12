@@ -8,7 +8,7 @@ src = os.path.dirname(os.path.realpath(__file__))
 root = os.path.dirname(src)
 sys.path.append(src)
 sys.path.append(root)
-from  Machin_Learning import predict_on_database
+from  Machine_Learning import predict_on_database
 import data_analysis
 
 # Initialize global variables

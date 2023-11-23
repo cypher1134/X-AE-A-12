@@ -9,7 +9,7 @@ root = os.path.dirname(src)
 sys.path.append(src)
 sys.path.append(root)
 
-import Machin_Learning as ML
+import Machine_Learning as ML
 
 train_data_file = os.path.abspath(os.path.join(root, 'data','train.csv'))
 partial_train = os.path.abspath(os.path.join(root, 'data', 'partial_train.csv'))
