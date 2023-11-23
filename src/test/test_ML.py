@@ -11,7 +11,7 @@ sys.path.append(root)
 
 import Machine_Learning as ML
 
-train_data_file = os.path.abspath(os.path.join(root, 'data','train.csv'))
+train_data_file = os.path.abspath(os.path.join(root, 'data','liar.csv'))
 partial_train = os.path.abspath(os.path.join(root, 'data','pytest_data', 'partial_train.csv'))
 partial_test = os.path.abspath(os.path.join(root, 'data', 'pytest_data','partial_test.csv'))
 
