@@ -1,8 +1,6 @@
 """
 Module about creating the graph with dash           
 """
-
-
 from tqdm import tqdm
 import pandas as pd
 from dash import Dash, html
@@ -137,10 +135,10 @@ def dash_graph(graph_dict):
 
 
 if __name__ == '__main__':
-    dico_test = {'user1': (54, [('user2', 3), ('user3', 51)]),
-                 'user2': (6, [('user1', 6)]),
-                 'user3': (0, []),
-                 'user4': (35, [('user3', 35)])}
+    dico_test = {'user1': (54, [('user2', 3), ('user3', 51)],0.3),
+                 'user2': (6, [('user1', 6)],0.5),
+                 'user3': (0, [],0.0),
+                 'user4': (35, [('user3', 35)],0.2)}
     app = Dash(__name__)
     app.layout = dash_graph(dico_test)
     app.run(debug=True)
