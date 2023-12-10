@@ -1,40 +1,82 @@
-stages:
-  - test ML
-  - test data_processing
-  - test parcours
-  - test data_analysis
-pytest ML:
-  stage: test ML
-  script:
-    - apt-get update -qy  # Update package index
-    - apt-get install -y python3-pip  # Install pip for Python 3
-    - pip3 install -r requirements.txt  # Install dependencies
-    - pip3 install pytest  # Install pytest
-    - pytest ./src/test/test_ML.py 
-    
-pytest data_processing:
-  stage: test data_processing
-  script:
-    - apt-get update -qy  # Update package index
-    - apt-get install -y python3-pip  # Install pip for Python 3
-    - pip3 install -r requirements.txt  # Install dependencies
-    - pip3 install pytest  # Install pytest
-    - pytest ./src/test/test_data_processing.py  
-  
-pytest parcours:
-  stage: test parcours
-  script:
-    - apt-get update -qy  # Update package index
-    - apt-get install -y python3-pip  # Install pip for Python 3
-    - pip3 install -r requirements.txt  # Install dependencies
-    - pip3 install pytest  # Install pytest
-    - pytest ./src/test/test_parcours.py 
+name: Test Pipeline
 
-pytest data_analysis:
-  stage: test data_analysis
-  script:
-    - apt-get update -qy  # Update package index
-    - apt-get install -y python3-pip  # Install pip for Python 3
-    - pip3 install -r requirements.txt  # Install dependencies
-    - pip3 install pytest  # Install pytest
-    - pytest ./src/test/test_data_analysis.py 
+on:
+  push:
+    branches:
+      - main  
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8  
+
+    - name: Install Dependencies
+      run: |
+        apt-get update -qy
+        apt-get install -y python3-pip
+        pip3 install -r requirements.txt
+        pip3 install pytest
+
+  test_ML:
+    runs-on: ubuntu-latest
+    needs: setup
+    strategy:
+      matrix:
+        test: [ML]
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Run ML Tests
+      run: pytest ./src/test/test_ML.py
+
+  test_data_processing:
+    runs-on: ubuntu-latest
+    needs: setup
+    strategy:
+      matrix:
+        test: [data_processing]
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Run Data Processing Tests
+      run: pytest ./src/test/test_data_processing.py
+
+  test_parcours:
+    runs-on: ubuntu-latest
+    needs: setup
+    strategy:
+      matrix:
+        test: [parcours]
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Run Parcours Tests
+      run: pytest ./src/test/test_parcours.py
+
+  test_data_analysis:
+    runs-on: ubuntu-latest
+    needs: setup
+    strategy:
+      matrix:
+        test: [data_analysis]
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Run Data Analysis Tests
+      run: pytest ./src/test/test_data_analysis.py
