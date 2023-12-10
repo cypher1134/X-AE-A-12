@@ -1,9 +1,9 @@
-name: Tests
+name: Test Pipeline
 
 on:
   push:
     branches:
-      - main  
+      - main 
 
 jobs:
   setup:
@@ -16,24 +16,20 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: 3.8  
-
-    - name: Install Dependencies
-      run: |
-        apt-get install -y python3-pip
-        pip3 install -r requirements.txt
-        pip3 install pytest
+        python-version: 3.8 
 
   test_ML:
     runs-on: ubuntu-latest
     needs: setup
-    strategy:
-      matrix:
-        test: [ML]
 
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
+
+    - name: Install Dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install pytest
 
     - name: Run ML Tests
       run: pytest ./src/test/test_ML.py
@@ -41,13 +37,15 @@ jobs:
   test_data_processing:
     runs-on: ubuntu-latest
     needs: setup
-    strategy:
-      matrix:
-        test: [data_processing]
 
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
+
+    - name: Install Dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install pytest
 
     - name: Run Data Processing Tests
       run: pytest ./src/test/test_data_processing.py
@@ -55,13 +53,15 @@ jobs:
   test_parcours:
     runs-on: ubuntu-latest
     needs: setup
-    strategy:
-      matrix:
-        test: [parcours]
 
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
+
+    - name: Install Dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install pytest
 
     - name: Run Parcours Tests
       run: pytest ./src/test/test_parcours.py
@@ -69,13 +69,15 @@ jobs:
   test_data_analysis:
     runs-on: ubuntu-latest
     needs: setup
-    strategy:
-      matrix:
-        test: [data_analysis]
 
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
+
+    - name: Install Dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install pytest
 
     - name: Run Data Analysis Tests
       run: pytest ./src/test/test_data_analysis.py
