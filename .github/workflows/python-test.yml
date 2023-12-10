@@ -65,7 +65,8 @@ jobs:
 
     - name: Run Parcours Tests
       run: pytest ./src/test/test_parcours.py
-
+ 
+ 
   test_data_analysis:
     runs-on: ubuntu-latest
     needs: setup
